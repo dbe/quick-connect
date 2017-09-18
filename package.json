@@ -1,0 +1,7 @@
+{
+  "name": "quick-connect",
+  "version": "1.0.0",
+  "dependencies": {
+    "jayson": "^2.0.4"
+  }
+}
