@@ -1,3 +1,7 @@
+To run server:
+yarn start
+
+Service Definition:
 getOpenGames() -> List<{gameId: string, description: string}>
 joinGame(gameId) -> {playerId:string, isPlayer0:boolean} throws CannotJoin
 createGame() -> {gameId: string, playerId: string, isPlayer0:boolean}
