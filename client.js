@@ -1,13 +1,19 @@
 var jayson = require('jayson');
+var PORT = 3001;
 
-// create a client
 var client = jayson.client.http({
-  port: 3001
+  port: PORT
 });
 
-// invoke "add"
-console.log("Adding 1 + 1");
-client.request('add', [1, 1], function(err, response) {
-  if(err) throw err;
-  console.log(response.result); // 2
-});
+console.log("Connected to server on port: ", PORT);
+getOpenGames(client);
+
+
+function getOpenGames(client) {
+  client.request('getOpenGames', null, function(err, response) {
+    if(err) throw err;
+    if(response.error) throw response.error.message;
+
+    console.log("Open Games: ", response.result)
+  });
+}
