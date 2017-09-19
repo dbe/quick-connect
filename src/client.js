@@ -6,14 +6,18 @@ var client = jayson.client.http({
 });
 
 console.log("Connected to server on port: ", PORT);
+logGenericResult('echo', ['oreo'], client);
 getOpenGames(client);
 
-
-function getOpenGames(client) {
-  client.request('getOpenGames', null, function(err, response) {
+function logGenericResult(procedureName, args, client) {
+  client.request(procedureName, args, function(err, response) {
     if(err) throw err;
     if(response.error) throw response.error.message;
 
-    console.log("Open Games: ", response.result)
+    console.log(`${procedureName}: ${response.result}`)
   });
+}
+
+function getOpenGames(client) {
+  logGenericResult('getOpenGames', null, client);
 }

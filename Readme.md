@@ -34,3 +34,6 @@ Game
   - boardHeights: List<int>
   - winCondition: List<int>
   - moves: List<int>
+
+
+  //./node_modules/.bin/sequelize model:generate --name Game --attributes gameId:uuid,player0Id:uuid,player1Id:uuid,isPlayer0First:boolean,
