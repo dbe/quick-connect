@@ -10,7 +10,7 @@ console.log("Connected to server on port: ", PORT);
 // logGenericResult('getOpenGames', null, client);
 // logGenericResult('joinGame', {gameId: 'df32fdf8-b198-43cd-bb46-86a777fe676d'}, client);
 // logGenericResult('createGame', null, client);
-logGenericResult('getGameState', {gameId: 'df32fdf8-b198-43cd-bb46-86a777fe676d', playerId: 'd99b022f-bfb9-4957-bbdf-72afbc927b55'}, client);
+logGenericResult('getGameState', {gameId: 'df32fdf8-b198-43cd-bb46-86a777fe676d'}, client);
 // logGenericResult('makeMove', null, client);
 
 

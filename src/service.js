@@ -19,7 +19,7 @@ function echo(args, callback) {
 //Returns: [Game] where player1Id is null
 function getOpenGames(args, callback) {
   Game.findAll({where: {player1Id: null}}).then(games => {
-    callback(null, games.map(game => game.openGameFormat()));
+    callback(null, games.map(game => game.gameState()));
   });
 }
 
@@ -56,34 +56,9 @@ function createGame(args, callback) {
 }
 
 function getGameState(args, callback) {
-  Game.find({where: {
-    gameId: args.gameId,
-    $or: [
-      {
-        player0Id: {
-          $eq: args.playerId
-        }
-      },
-      {
-        player1Id: {
-          $eq: args.playerId
-        }
-      }
-    ]
-  }}).then(game => {
-    console.log("Found game when asked about game state")
-    console.log(game)
-    // let data = 
+  Game.findByGameId(args.gameId).then(game => {
+    callback(null, game.gameState());
   });
-
-  let gameState = {
-    isPlayer0First: true,
-    boardHeights: [4, 4, 4, 4, 4],
-    winCondition: [4],
-    moves: [0, 1, 4, 4, 2]
-  };
-
-  callback(null, gameState);
 }
 
 function makeMove(args, callback) {
@@ -98,5 +73,21 @@ function makeMove(args, callback) {
 function isRandomFail() {
   return Math.random() < 0.2;
 }
+
+// Game.find({where: {
+//     gameId: args.gameId,
+//     $or: [
+//       {
+//         player0Id: {
+//           $eq: args.playerId
+//         }
+//       },
+//       {
+//         player1Id: {
+//           $eq: args.playerId
+//         }
+//       }
+//     ]
+//   }})
 
 export default service;

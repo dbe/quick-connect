@@ -17,14 +17,15 @@
 `yarn start-client`
 
 # Service Definition:
-- getOpenGames() -> List<{gameId: uuid, isPlayer0First: boolean, boardHeights: List<int>, winCondition: List<int>}>
+- getOpenGames() -> List<GameState>
 - joinGame(gameId) -> {playerId:uuid} throws CannotJoin
 - createGame() -> {gameId: uuid, playerId: uuid}
-- getGameState(gameId, playerId) -> GameState
-- makeMove(gameId, playerId, GameState) -> status:string throws InvalidMove
+- getGameState(gameId) -> GameState
+- makeMove(playerId, GameState) -> status:string throws InvalidMove
 
 
-GameState: {  
+GameState: {
+  gameId: uuid,
   isPlayer0First: boolean,  
   boardHeights: List<int>,  
   winCondition: List<int>,  

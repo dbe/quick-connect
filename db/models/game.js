@@ -8,20 +8,19 @@ module.exports = (sequelize, DataTypes) => {
     boardHeights: DataTypes.ARRAY(DataTypes.INTEGER),
     winCondition: DataTypes.ARRAY(DataTypes.INTEGER),
     moves: DataTypes.ARRAY(DataTypes.INTEGER)
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-      }
-    }
   });
 
-  Game.prototype.openGameFormat = function() {
+  Game.findByGameId = function(gameId) {
+    return Game.find({where: {gameId: gameId}});
+  }
+
+  Game.prototype.gameState = function() {
     return {
       gameId: this.gameId,
       isPlayer0First: this.isPlayer0First,
       boardHeights: this.boardHeights,
-      winCondition: this.winCondition
+      winCondition: this.winCondition,
+      moves: this.moves
     }
   }
 
