@@ -19,7 +19,7 @@ function echo(args, callback) {
 //Returns: [Game] where player1Id is null
 function getOpenGames(args, callback) {
   Game.findAll({where: {player1Id: null}}).then(games => {
-    callback(null, games);
+    callback(null, games.map(game => game.openGameFormat()));
   });
 }
 
@@ -40,6 +40,7 @@ function joinGame(args, callback) {
 }
 
 //Expects no args
+//Returns: {gameId: uuid, playerId: uuid, isPlayer0: boolean}
 function createGame(args, callback) {
   Game.create({
     gameId: uuidv4(),
@@ -62,7 +63,7 @@ function getGameState(args, callback) {
     moves: [0, 1, 4, 4, 2]
   };
 
-  callback(null, gameState);
+  // callback(null, gameState);
 }
 
 function makeMove(args, callback) {

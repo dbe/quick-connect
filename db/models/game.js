@@ -15,5 +15,15 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   });
+
+  Game.prototype.openGameFormat = function() {
+    return {
+      gameId: this.gameId,
+      isPlayer0First: this.isPlayer0First,
+      boardHeights: this.boardHeights,
+      winCondition: this.winCondition
+    }
+  }
+
   return Game;
 };
