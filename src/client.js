@@ -1,6 +1,10 @@
 var jayson = require('jayson');
 var PORT = 3001;
 
+var models = require('../db/models');
+var sequelize = models.sequelize;
+var Game = require('../db/models').Game;
+
 var client = jayson.client.http({port: PORT});
 console.log("Connected to server on port: ", PORT);
 
@@ -11,6 +15,11 @@ logGenericResult('joinGame', null, client);
 logGenericResult('createGame', null, client);
 logGenericResult('getGameState', null, client);
 logGenericResult('makeMove', null, client);
+
+Game.findAll().then(games => {
+  console.log(games);
+  sequelize.close();
+}).catch(err => console.log(err));
 
 function logGenericResult(procedureName, args, client) {
   client.request(procedureName, args, function(err, response) {
