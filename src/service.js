@@ -38,14 +38,9 @@ function createGame(args, callback) {
     boardHeights: [8,8,8,8,8,8,8],
     winCondition: [4],
     moves: []
-  }).then((a, b, c) =>  {
-    console.log("In callback of create");
-    console.log(a);
-    console.log(b);
-    console.log(c);
+  }).then(game =>  {
+    callback(null, {gameId: game.gameId, playerId: game.player0Id, isPlayer0: true});
   });
-
-  callback(null, {gameId: uuidv4(), playerId: uuidv4(), isPlayer0: false});
 }
 
 function getGameState(args, callback) {
