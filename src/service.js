@@ -20,12 +20,19 @@ function getOpenGames(args, callback) {
   callback(null, [uuidv4(), uuidv4()]);
 }
 
+//Expects: gameId:uuid
+//Returns: playerId:uuid and isPlayer0:boolean if successfully joined
+//Throws: CannotJoin
 function joinGame(args, callback) {
-  if(isRandomFail()) {
-    callback({code: 500, message: "Cannot Join Game"});
-  } else {
-    callback(null, {playerId: uuidv4(), isPlayer0: true})
-  }
+  Game.find({where: {gameId: args.gameId}}).then(game => {
+    if(game.player1Id !== null) {
+      callback({code: 500, message: "Game was already full."});
+    } else {
+      game.update({player1Id: uuidv4()}).then((updatedGame) => {
+        callback(null, {playerId: updatedGame.player1Id, isPlayer0: false});
+      });
+    }
+  });
 }
 
 //Expects no args
