@@ -24,7 +24,7 @@ function getOpenGames(args, callback) {
 }
 
 //Expects: args: {gameId: uuid}
-//Returns: {playerId: uuid, isPlayer0: boolean} if successfully joined
+//Returns: {playerId: uuid} if successfully joined
 //Throws: CannotJoin
 //TODO: Clean this up, add transactions to avoid race conditions
 function joinGame(args, callback) {
@@ -40,7 +40,7 @@ function joinGame(args, callback) {
 }
 
 //Expects no args
-//Returns: {gameId: uuid, playerId: uuid, isPlayer0: boolean}
+//Returns: {gameId: uuid, playerId: uuid}
 function createGame(args, callback) {
   Game.create({
     gameId: uuidv4(),
@@ -56,6 +56,26 @@ function createGame(args, callback) {
 }
 
 function getGameState(args, callback) {
+  Game.find({where: {
+    gameId: args.gameId,
+    $or: [
+      {
+        player0Id: {
+          $eq: args.playerId
+        }
+      },
+      {
+        player1Id: {
+          $eq: args.playerId
+        }
+      }
+    ]
+  }}).then(game => {
+    console.log("Found game when asked about game state")
+    console.log(game)
+    // let data = 
+  });
+
   let gameState = {
     isPlayer0First: true,
     boardHeights: [4, 4, 4, 4, 4],
