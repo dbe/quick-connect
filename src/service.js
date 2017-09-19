@@ -16,8 +16,11 @@ function echo(args, callback) {
 }
 
 //Expects no args
+//Returns: [Game] where player1Id is null
 function getOpenGames(args, callback) {
-  callback(null, [uuidv4(), uuidv4()]);
+  Game.findAll({where: {player1Id: null}}).then(games => {
+    callback(null, games);
+  });
 }
 
 //Expects: args: {gameId: uuid}

@@ -7,8 +7,8 @@ console.log("Connected to server on port: ", PORT);
 
 //Run-thru all of the commands
 // logGenericResult('echo', {message: 'oreo'}, client);
-// logGenericResult('getOpenGames', null, client);
-logGenericResult('joinGame', {gameId: 'df32fdf8-b198-43cd-bb46-86a777fe676d'}, client);
+logGenericResult('getOpenGames', null, client);
+// logGenericResult('joinGame', {gameId: 'df32fdf8-b198-43cd-bb46-86a777fe676d'}, client);
 // logGenericResult('createGame', null, client);
 // logGenericResult('getGameState', null, client);
 // logGenericResult('makeMove', null, client);
