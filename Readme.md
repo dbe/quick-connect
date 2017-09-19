@@ -5,11 +5,11 @@ To run Client:
 yarn start-client
 
 Service Definition:
-getOpenGames() -> List<{gameId: uuid, isPlayer0First: boolean, boardHeights: List<int>, winCondition: List<int>}>
-joinGame(gameId) -> {playerId:string, isPlayer0:boolean} throws CannotJoin
-createGame() -> {gameId: string, playerId: string, isPlayer0:boolean}
-getGameState(gameId, playerId) -> GameState
-makeMove(gameId, playerId, GameState) -> status:string throws InvalidMove
+- getOpenGames() -> List<{gameId: uuid, isPlayer0First: boolean, boardHeights: List<int>, winCondition: List<int>}>
+- joinGame(gameId) -> {playerId:uuid} throws CannotJoin
+- createGame() -> {gameId: uuid, playerId: uuid}
+- getGameState(gameId, playerId) -> GameState
+- makeMove(gameId, playerId, GameState) -> status:string throws InvalidMove
 
 GameState: {
   isPlayer0First: boolean,

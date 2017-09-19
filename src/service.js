@@ -33,7 +33,7 @@ function joinGame(args, callback) {
       callback({code: 500, message: "Game was already full."});
     } else {
       game.update({player1Id: uuidv4()}).then((updatedGame) => {
-        callback(null, {playerId: updatedGame.player1Id, isPlayer0: false});
+        callback(null, {playerId: updatedGame.player1Id});
       });
     }
   });
@@ -51,7 +51,7 @@ function createGame(args, callback) {
     winCondition: [4],
     moves: []
   }).then(game =>  {
-    callback(null, {gameId: game.gameId, playerId: game.player0Id, isPlayer0: true});
+    callback(null, {gameId: game.gameId, playerId: game.player0Id});
   });
 }
 
@@ -63,7 +63,7 @@ function getGameState(args, callback) {
     moves: [0, 1, 4, 4, 2]
   };
 
-  // callback(null, gameState);
+  callback(null, gameState);
 }
 
 function makeMove(args, callback) {
