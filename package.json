@@ -17,6 +17,7 @@
   "scripts": {
     "build": "babel --presets es2015 src --out-dir lib --ignore test.js",
     "watch": "yarn build -- --watch",
-    "start": "yarn build && node lib/server.js"
+    "start": "yarn build && node lib/server.js",
+    "start-client": "yarn build && node lib/client.js"
   }
 }

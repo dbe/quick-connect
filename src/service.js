@@ -51,17 +51,9 @@ function makeMove(args, callback) {
   }
 }
 
-
-
-
 //Just for testing purposes. Fakes functions randomly fail
 function isRandomFail() {
   return Math.random() < 0.2;
-}
-
-//Just for testing, generates a uuid
-function uuid() {
-
 }
 
 export default service;

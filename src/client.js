@@ -1,18 +1,13 @@
 var jayson = require('jayson');
 var PORT = 3001;
 
-var client = jayson.client.http({
-  port: PORT
-});
+var client = jayson.client.http({port: PORT});
 console.log("Connected to server on port: ", PORT);
 
 
 
-
-
-
 logGenericResult('echo', {message: 'oreo'}, client);
-getOpenGames(client);
+logGenericResult('getOpenGames', null, client);
 logGenericResult('joinGame', null, client);
 logGenericResult('createGame', null, client);
 logGenericResult('getGameState', null, client);
@@ -27,8 +22,4 @@ function logGenericResult(procedureName, args, client) {
     console.log(response.result);
     console.log();
   });
-}
-
-function getOpenGames(client) {
-  logGenericResult('getOpenGames', null, client);
 }
