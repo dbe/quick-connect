@@ -11,15 +11,17 @@ console.log("Connected to server on port: ", PORT);
 
 
 
-logGenericResult('echo', {message: 'oreo'}, client);
-getOpenGames(client);
+// logGenericResult('echo', {message: 'oreo'}, client);
+logGenericResult('joinGame', {message: 'oreo'}, client);
+// getOpenGames(client);
 
 function logGenericResult(procedureName, args, client) {
   client.request(procedureName, args, function(err, response) {
     if(err) throw err;
     if(response.error) throw response.error.message;
 
-    console.log(`${procedureName}: ${response.result}`)
+    console.log(`${procedureName}:`);
+    console.log(response.result);
   });
 }
 
