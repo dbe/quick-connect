@@ -33,11 +33,22 @@ function createGame(args, callback) {
 }
 
 function getGameState(args, callback) {
+  let gameState = {
+    isPlayer0First: true,
+    boardHeights: [4, 4, 4, 4, 4],
+    winCondition: [4],
+    moves: [0, 1, 4, 4, 2]
+  };
 
+  callback(null, gameState);
 }
 
 function makeMove(args, callback) {
-
+  if(isRandomFail()) {
+    callback({code: 500, message: "InvalidMove"});
+  } else {
+    callback(null, {status: 'ok'})
+  }
 }
 
 
