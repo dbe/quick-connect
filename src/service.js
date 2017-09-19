@@ -1,5 +1,6 @@
-const uuidv4 = require('uuid/v4');
+import { sequelize, Game } from '../db/models';
 
+const uuidv4 = require('uuid/v4');
 const service = {
   echo,
   getOpenGames,
@@ -29,6 +30,21 @@ function joinGame(args, callback) {
 
 //Expects no args
 function createGame(args, callback) {
+  Game.create({
+    gameId: uuidv4(),
+    player0Id: uuidv4(),
+    player1Id: null,
+    isPlayer0First: true,
+    boardHeights: [8,8,8,8,8,8,8],
+    winCondition: [4],
+    moves: []
+  }).then((a, b, c) =>  {
+    console.log("In callback of create");
+    console.log(a);
+    console.log(b);
+    console.log(c);
+  });
+
   callback(null, {gameId: uuidv4(), playerId: uuidv4(), isPlayer0: false});
 }
 

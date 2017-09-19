@@ -5,9 +5,9 @@ module.exports = (sequelize, DataTypes) => {
     player0Id: DataTypes.UUID,
     player1Id: DataTypes.UUID,
     isPlayer0First: DataTypes.BOOLEAN,
-    boardHeights: DataTypes.ARRAY(DataTypes.BOOLEAN),
-    winCondition: DataTypes.ARRAY(DataTypes.BOOLEAN),
-    moves: DataTypes.ARRAY(DataTypes.BOOLEAN)
+    boardHeights: DataTypes.ARRAY(DataTypes.INTEGER),
+    winCondition: DataTypes.ARRAY(DataTypes.INTEGER),
+    moves: DataTypes.ARRAY(DataTypes.INTEGER)
   }, {
     classMethods: {
       associate: function(models) {
