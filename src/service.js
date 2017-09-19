@@ -20,9 +20,10 @@ function getOpenGames(args, callback) {
   callback(null, [uuidv4(), uuidv4()]);
 }
 
-//Expects: gameId:uuid
-//Returns: playerId:uuid and isPlayer0:boolean if successfully joined
+//Expects: args: {gameId: uuid}
+//Returns: {playerId: uuid, isPlayer0: boolean} if successfully joined
 //Throws: CannotJoin
+//TODO: Clean this up, add transactions to avoid race conditions
 function joinGame(args, callback) {
   Game.find({where: {gameId: args.gameId}}).then(game => {
     if(game.player1Id !== null) {
