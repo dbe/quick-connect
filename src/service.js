@@ -66,7 +66,6 @@ function getGameState(args, callback) {
 
 //Expects: {gameId: uuid, playerId: uuid, moves: List<int>}
 //Returns: {status: string}
-//TODO: Make sure it is the current player's move
 function makeMove(args, callback) {
   Game.findByGameAndPlayerId(args.gameId, args.playerId).then(game => {
     if(game === null) {
@@ -91,11 +90,6 @@ function makeMove(args, callback) {
       return callback(null, {status: "ok"});
     });
   });
-}
-
-//Just for testing purposes. Fakes functions randomly fail
-function isRandomFail() {
-  return Math.random() < 0.2;
 }
 
 export default service;
