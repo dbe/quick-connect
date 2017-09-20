@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Game.prototype.isMoveLegal = function(move) {
-    
+    if(move < 0 || move >= this.boardHeights)
   }
 
   Game.prototype.gameState = function() {
