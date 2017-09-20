@@ -16,6 +16,9 @@
 ## To run Client:
 `yarn start-client`
 
+## To run tests:
+`yarn test`
+
 # Service Definition:
 - getOpenGames() -> List<GameState>
 - joinGame(gameId) -> {playerId:uuid} throws CannotJoin
