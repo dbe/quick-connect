@@ -19,11 +19,13 @@ html
 
 
       function playGame(moves) {
-
+        playMove(0, 0, 0);
+        playMove(0, 1, 1);
       }
 
       function playMove(col, row, player) {
-        $('')
+        $box = $(`.box[col=${col}][row=${row}]`);
+        $box.append(`<div class="circle ${PLAYER_TO_COLOR[player]}"></div>`);
       }
 
       //Setup html functions
