@@ -21,7 +21,7 @@ export default class BoardState {
   }
 
   isPlayerToken(col, row, playerNumber) {
-    // if(col < )
+    return this.containsToken(col, row) && this.state[col][row] === playerNumber;
   }
 
   containsToken(col, row) {
