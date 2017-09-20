@@ -6,6 +6,7 @@ import service from './service';
 
 var app = express();
 app.set('view engine', 'pug');
+app.use(express.static(__dirname + '/../public'));
 
 app.get('/', function (req, res) {
   Game.findAll().then(games => {
