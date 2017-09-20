@@ -55,39 +55,26 @@ function createGame(args, callback) {
   });
 }
 
+//Expects: {gameId: uuid}
+//Returns: GameState
+//TODO: Handle gameId not defined as well as the error case when no game is found
 function getGameState(args, callback) {
   Game.findByGameId(args.gameId).then(game => {
     callback(null, game.gameState());
   });
 }
 
+//Expects: {playerId: uuid, gameState: GameState}
+//Returns: GameState
 function makeMove(args, callback) {
-  if(isRandomFail()) {
-    callback({code: 500, message: "InvalidMove"});
-  } else {
-    callback(null, {status: 'ok'})
-  }
+  Game.findByGameAndPlayerId(args.gameState.gameId, args.playerId).then(game => {
+
+  });
 }
 
 //Just for testing purposes. Fakes functions randomly fail
 function isRandomFail() {
   return Math.random() < 0.2;
 }
-
-// Game.find({where: {
-//     gameId: args.gameId,
-//     $or: [
-//       {
-//         player0Id: {
-//           $eq: args.playerId
-//         }
-//       },
-//       {
-//         player1Id: {
-//           $eq: args.playerId
-//         }
-//       }
-//     ]
-//   }})
 
 export default service;

@@ -14,6 +14,28 @@ module.exports = (sequelize, DataTypes) => {
     return Game.find({where: {gameId: gameId}});
   }
 
+  Game.findByGameAndPlayerId = function(gameId, playerId) {
+    return Game.find({where: {
+      gameId: gameId,
+      $or: [
+        {
+          player0Id: {
+            $eq: playerId
+          }
+        },
+        {
+          player1Id: {
+            $eq: playerId
+          }
+        }
+      ]
+    }});
+  }
+
+  Game.prototype.isGameOver = function () {
+
+  }
+
   Game.prototype.gameState = function() {
     return {
       gameId: this.gameId,

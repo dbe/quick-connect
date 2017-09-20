@@ -23,7 +23,6 @@
 - getGameState(gameId) -> GameState
 - makeMove(playerId, GameState) -> status:string throws InvalidMove
 
-
 GameState: {
   gameId: uuid,
   isPlayer0First: boolean,  
@@ -31,7 +30,6 @@ GameState: {
   winCondition: List<int>,  
   moves: List<int>  
 }
-
 
 Example GameState: {  
   isPlayer0First: true,  
