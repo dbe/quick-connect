@@ -13,9 +13,15 @@ app.get('/', function (req, res) {
   });
 });
 
+app.get('/api/v1/games', function (req, res) {
+  Game.findAll().then(games => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(games.map(game => game.gameState())));
+  });
+});
+
 app.listen(3002);
 console.log("Web server listening on port 3002");
-
 
 const server = jayson.server(service);
 server.http().listen(3001);

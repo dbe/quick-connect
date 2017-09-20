@@ -19,6 +19,12 @@
 ## To run tests:
 `yarn test`
 
+## Express server
+Running the server will also create an http server on port 3002. The index of this server will show games in html form.
+
+### Game data api
+The express server also serves game data in json at the endpoint /api/v1/games
+
 # Service Definition:
 - getOpenGames() -> List<GameState>
 - joinGame(gameId) -> {playerId:uuid} throws CannotJoin
