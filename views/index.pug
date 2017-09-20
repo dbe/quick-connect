@@ -24,4 +24,4 @@ html
             td= game.boardHeights
             td= game.winCondition
             td= game.moves
-            td= game.isGameOver()
+            td= game.isStarted() && game.isGameOver()

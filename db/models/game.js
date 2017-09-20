@@ -63,7 +63,10 @@ module.exports = (sequelize, DataTypes) => {
     return isFirstPlayersTurn === this.isPlayer0First;
   }
 
-  //TODO: Finish this
+  Game.prototype.isStarted = function() {
+    return this.player0Id !== null && this.player1Id !== null;
+  }
+
   Game.prototype.isGameOver = function () {
     let bs = new BoardState(this);
 

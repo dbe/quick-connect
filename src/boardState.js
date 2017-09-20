@@ -45,7 +45,6 @@ export default class BoardState {
   }
 
   isGameOver() {
-    console.log("Calculating whether game is over")
     //TODO: This only handles single win conditions
     let winCount = this.game.winCondition[0]
 
@@ -67,8 +66,16 @@ export default class BoardState {
           }
 
           if(win) {
-            console.log(`Player ${player} wins. Starting at: [${col},${row}] going in direction: ${dir}`)
-            return true;
+            let message = `Player ${player} wins. Starting at: [${col},${row}] going in direction: ${dir}`;
+            console.log(message);
+
+            return {
+              message,
+              winner: player,
+              col: col,
+              row: row,
+              dir: dir
+            }
           }
         }
       }

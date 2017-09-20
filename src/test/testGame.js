@@ -71,5 +71,5 @@ test('detects game over', t => {
   });
 
 
-	t.true(game.isGameOver());
+	t.true(game.isGameOver() !== false);
 });

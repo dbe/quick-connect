@@ -47,9 +47,11 @@ function createGame(args, callback) {
     player0Id: uuidv4(),
     player1Id: null,
     isPlayer0First: true,
-    boardHeights: [8,8,8,8,8,8,8],
-    winCondition: [4],
-    moves: []
+    // boardHeights: [8,8,8,8,8,8,8],
+    boardHeights: [1],
+    // winCondition: [4],
+    winCondition: [1],
+    moves: [0]
   }).then(game =>  {
     callback(null, {gameId: game.gameId, playerId: game.player0Id});
   });
@@ -72,8 +74,13 @@ function makeMove(args, callback) {
       return callback({code: 500, message: "Could not find game"});
     }
 
-    if(game.isGameOver()) {
-      return callback({code: 500, message: "Cannot make move. Game is over."});
+    if(!game.isStarted()) {
+      return callback({code: 500, message: "Game has not started yet. Please wait for another player to join"});
+    }
+
+    let gameOver = game.isGameOver();
+    if(gameOver) {
+      return callback({code: 500, message: `Cannot make move. Game is over: ${gameOver.message}`});
     }
 
     if(!game.isPlayerTurnById(args.playerId)) {
