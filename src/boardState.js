@@ -1,3 +1,14 @@
+const DIRECTIONS = [
+  [-1, -1],
+  [-1, 0],
+  [-1, 1],
+  [0, -1],
+  [0, 1],
+  [1, -1],
+  [1, 0],
+  [1, 1],
+];
+
 export default class BoardState {
   constructor(game) {
     this.state = this.buildBoardState(game.moves, game.boardHeights, game.isPlayer0First);
@@ -40,10 +51,29 @@ export default class BoardState {
 
     for(let col = 0; col < this.game.boardHeights.length; col++) {
       for(let row = 0; row < this.game.boardHeights[col]; row++) {
-        console.log(`col: ${col} row: ${row}`);
+        let player = this.state[col][row];
 
+        for(let dirIndex = 0; dirIndex < DIRECTIONS.length; dirIndex++) {
+          let dir = DIRECTIONS[dirIndex];
+          let win = true;
 
+          for(let count = 1; count < winCount; count++) {
+            let checkCol = col + (count * dir[0]);
+            let checkRow = row + (count * dir[1]);
+            if(!this.isPlayerToken(checkCol, checkRow, player)) {
+              win = false;
+              break;
+            }
+          }
+
+          if(win) {
+            console.log(`Player ${player} wins. Starting at: [${col},${row}] going in direction: ${dir}`)
+            return true;
+          }
+        }
       }
     }
+
+    return false;
   }
 }
