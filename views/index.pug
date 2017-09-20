@@ -14,6 +14,7 @@ html
             th winCondition
             th moves
             th game over?
+            th View game
         tbody
         each game in games
           tr
@@ -25,3 +26,4 @@ html
             td= game.winCondition
             td= game.moves
             td= game.isStarted() && game.isGameOver()
+            td <a href="/preview/#{game.gameId}">Link</a>
