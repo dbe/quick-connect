@@ -13,6 +13,7 @@ html
             th Board Heights
             th winCondition
             th moves
+            th game over?
         tbody
         each game in games
           tr
@@ -23,3 +24,4 @@ html
             td= game.boardHeights
             td= game.winCondition
             td= game.moves
+            td= game.isGameOver()

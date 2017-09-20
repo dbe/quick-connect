@@ -1,6 +1,28 @@
 import test from 'ava';
 import { Game } from '../../db/models';
 
+test('returns isPlayer0Turn correctly when player0 is first', t => {
+  let game = Game.build({
+    moves: [1, 1, 2],
+    isPlayer0First: true
+  });
+
+  t.false(game.isPlayer0Turn());
+  game.makeMove(1);
+  t.true(game.isPlayer0Turn());
+});
+
+test('returns isPlayer0Turn correctly when player0 is not first', t => {
+  let game = Game.build({
+    moves: [1, 1, 2],
+    isPlayer0First: false
+  });
+
+  t.true(game.isPlayer0Turn());
+  game.makeMove(1);
+  t.false(game.isPlayer0Turn());
+});
+
 test('calculates moveCountForCol', t => {
   let game = Game.build({
     moves: [1, 1, 2],

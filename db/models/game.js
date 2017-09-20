@@ -48,6 +48,12 @@ module.exports = (sequelize, DataTypes) => {
     return moves[moves.length - 1];
   }
 
+  Game.prototype.isPlayer0Turn = function() {
+    let isFirstPlayersTurn = this.moves.length % 2 == 0;
+
+    return isFirstPlayersTurn === this.isPlayer0First;
+  }
+
   //TODO: Finish this
   Game.prototype.isGameOver = function () {
     return false;
