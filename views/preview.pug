@@ -4,7 +4,6 @@ html
     link(rel="stylesheet" href="/css/main.css")
     script(src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous")
   body
-    h1 hi
     .container
       .play
 
@@ -12,4 +11,29 @@ html
     $(function() {
       var game = !{game}
       console.log(game);
+
+      buildGrid(game.boardHeights);
+
+
+
+
+      //Setup html functions
+      function buildGrid(heights) {
+        heights.forEach(function(height, i) {
+          appendCol(i, height);
+        });
+      }
+
+      function appendCol(id, height) {
+        $('.play').append(generateCol(id, height));
+      }
+
+      function generateCol(id, height) {
+        var col = '<div class="play-col" id=' + id + '>';
+        for(var i = 0; i < height; i++) {
+          var row = height - i - 1;
+          col += '<div class="box" row=' + row + '></div>';
+        }
+        return col;
+      }
     });
