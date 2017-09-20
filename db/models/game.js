@@ -1,4 +1,7 @@
 'use strict';
+
+var BoardState = require('../../lib/boardState.js').default;
+
 module.exports = (sequelize, DataTypes) => {
   var Game = sequelize.define('Game', {
     gameId: DataTypes.UUID,
@@ -62,7 +65,9 @@ module.exports = (sequelize, DataTypes) => {
 
   //TODO: Finish this
   Game.prototype.isGameOver = function () {
-    return false;
+    let bs = new BoardState(this);
+
+    return bs.isGameOver();
   }
 
   Game.prototype.makeMove = function(move) {
