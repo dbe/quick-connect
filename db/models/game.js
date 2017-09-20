@@ -48,6 +48,12 @@ module.exports = (sequelize, DataTypes) => {
     return moves[moves.length - 1];
   }
 
+  Game.prototype.isPlayerTurnById = function(playerId) {
+    let isPlayer0 = this.player0Id === playerId;
+
+    return isPlayer0 === this.isPlayer0Turn();
+  }
+
   Game.prototype.isPlayer0Turn = function() {
     let isFirstPlayersTurn = this.moves.length % 2 == 0;
 
