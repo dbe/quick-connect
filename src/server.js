@@ -13,6 +13,12 @@ app.get('/', function (req, res) {
   });
 });
 
+app.get('/preview/:gameId', function (req, res) {
+  Game.find({where: {gameId: req.params.gameId}}).then(game => {
+    res.render('preview', {game: JSON.stringify(game.gameState())});
+  });
+});
+
 app.get('/api/v1/games', function (req, res) {
   Game.findAll().then(games => {
     res.setHeader('Content-Type', 'application/json');
