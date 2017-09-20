@@ -33,7 +33,6 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Game.prototype.isGameOver = function () {
-
   }
 
   Game.prototype.gameState = function() {
