@@ -36,7 +36,21 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Game.prototype.isMoveLegal = function(move) {
-    if(move < 0 || move >= this.boardHeights)
+    if(move < 0 || move >= this.boardHeights.length) {
+      return false;
+    }
+
+    if(this.moveCountForCol(move) >= this.boardHeights[move]) {
+      return false;
+    }
+
+    return true;
+  }
+
+  Game.prototype.moveCountForCol = function(col) {
+    return this.moves.filter(move => {
+      return(move === col);
+    }).length;
   }
 
   Game.prototype.gameState = function() {
