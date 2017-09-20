@@ -35,6 +35,10 @@ module.exports = (sequelize, DataTypes) => {
   Game.prototype.isGameOver = function () {
   }
 
+  Game.prototype.isMoveLegal = function(move) {
+    
+  }
+
   Game.prototype.gameState = function() {
     return {
       gameId: this.gameId,

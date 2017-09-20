@@ -67,7 +67,7 @@ function getGameState(args, callback) {
 //Expects: {playerId: uuid, gameState: GameState}
 //Returns: GameState
 function makeMove(args, callback) {
-  Game.findByGameAndPlayerId(args.gameState.gameId, args.playerId).then(game => {
+  Game.findByGameAndPlayerId(args.gameId, args.playerId).then(game => {
 
   });
 }

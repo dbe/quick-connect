@@ -23,8 +23,8 @@
 - getOpenGames() -> List<GameState>
 - joinGame(gameId) -> {playerId:uuid} throws CannotJoin
 - createGame() -> {gameId: uuid, playerId: uuid}
-- getGameState(gameId) -> GameState
-- makeMove(playerId, GameState) -> status:string throws InvalidMove
+- getGameState(gameId:uuid) -> GameState
+- makeMove(gameId: uuid, playerId: uuid, moves: List<int>) -> status:string throws InvalidMove
 
 GameState: {
   gameId: uuid,
