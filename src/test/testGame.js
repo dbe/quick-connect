@@ -16,7 +16,7 @@ test('detects legal move', t => {
     boardHeights: [0, 1, 3]
   });
 
-  // t.false(game.isMoveLegal(0))
+  t.false(game.isMoveLegal(0))
   t.false(game.isMoveLegal(-1))
   t.false(game.isMoveLegal(3))
   t.false(game.isMoveLegal(1))

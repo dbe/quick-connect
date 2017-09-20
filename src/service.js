@@ -65,10 +65,27 @@ function getGameState(args, callback) {
 }
 
 //Expects: {gameId: uuid, playerId: uuid, moves: List<int>}
-//Returns: GameState
+//Returns: {status: string}
+//TODO: Make sure it is the current player's move
 function makeMove(args, callback) {
   Game.findByGameAndPlayerId(args.gameId, args.playerId).then(game => {
+    if(game === null) {
+      return callback({code: 500, message: "Could not find game"});
+    }
 
+    if(game.isGameOver()) {
+      return callback({code: 500, message: "Cannot make move. Game is over."});
+    }
+
+    let move = game.extractIntendedMove(args.moves);
+    if(game.isMoveLegal(move) === false) {
+      return callback({code: 500, message: "Illegal Move"});
+    }
+
+    game.makeMove(move);
+    game.update({moves: game.moves}).then(game => {
+      return callback(null, {status: "ok"});
+    });
   });
 }
 
