@@ -77,6 +77,10 @@ function makeMove(args, callback) {
       return callback({code: 500, message: "Cannot make move. Game is over."});
     }
 
+    if(!game.isPlayerTurnById(args.playerId)) {
+      return callback({code: 500, message: "It is not your turn."});
+    }
+
     let move = game.extractIntendedMove(args.moves);
     if(game.isMoveLegal(move) === false) {
       return callback({code: 500, message: "Illegal Move"});
