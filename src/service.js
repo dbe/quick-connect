@@ -47,11 +47,9 @@ function createGame(args, callback) {
     player0Id: uuidv4(),
     player1Id: null,
     isPlayer0First: true,
-    // boardHeights: [8,8,8,8,8,8,8],
-    boardHeights: [1],
-    // winCondition: [4],
-    winCondition: [1],
-    moves: [0]
+    boardHeights: [8,8,8,8,8,8,8],
+    winCondition: [4],
+    moves: []
   }).then(game =>  {
     callback(null, {gameId: game.gameId, playerId: game.player0Id});
   });
