@@ -9,13 +9,22 @@ html
 
   script.
     $(function() {
+      PLAYER_TO_COLOR = ['red', 'black'];
+
       var game = !{game}
       console.log(game);
 
       buildGrid(game.boardHeights);
+      playGame(game.moves);
 
 
+      function playGame(moves) {
 
+      }
+
+      function playMove(col, row, player) {
+        $('')
+      }
 
       //Setup html functions
       function buildGrid(heights) {
@@ -24,15 +33,15 @@ html
         });
       }
 
-      function appendCol(id, height) {
-        $('.play').append(generateCol(id, height));
+      function appendCol(colNum, height) {
+        $('.play').append(generateCol(colNum, height));
       }
 
-      function generateCol(id, height) {
-        var col = '<div class="play-col" id=' + id + '>';
+      function generateCol(colNum, height) {
+        var col = '<div class="play-col" col=' + colNum + '>';
         for(var i = 0; i < height; i++) {
-          var row = height - i - 1;
-          col += '<div class="box" row=' + row + '></div>';
+          var rowNum = height - i - 1;
+          col += '<div class="box" row=' + rowNum + ' col=' + colNum + '></div>';
         }
         return col;
       }
