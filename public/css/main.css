@@ -1,5 +1,14 @@
-h1 {
-  color: red;
+.game-area {
+  text-align: center;
+}
+
+.autoplay-button {
+  margin: 20px;
+  background-color: #d9534f;
+}
+
+.autoplay-button.on {
+  background-color: #5cb85c;
 }
 
 .play-col {

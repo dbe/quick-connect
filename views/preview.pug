@@ -1,13 +1,16 @@
 html
   head
-    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous")
+    link(rel="stylesheet" href="/css/bootstrap.min.css")
     link(rel="stylesheet" href="/css/main.css")
     script(src="/js/renderer.js")
     script(src="/js/renderManager.js")
     script(src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous")
   body
-    .container-fluid
-      .play
+    .container
+      .game-area
+        .play
+        button(type="button" class="btn btn-lg autoplay-button") Autoplay
+        p Left and right arrows to step, spacebar to toggle autoplay.
 
   script.
     $(function() {
@@ -21,7 +24,20 @@ html
           manager.stepGame(-1);
         } else if(e.keyCode == 39) {
           manager.stepGame(1);
+        } else if(e.keyCode == 32) {
+          $('.autoplay-button').click();
         }
+      });
+
+      $('.autoplay-button').click(function(e) {
+        $(this).toggleClass('on');
+
+        if(manager.playing) {
+          manager.cancelPlayback();
+        } else {
+          manager.playByTime(200, true);
+        }
+
       });
 
       //manager.playByTime(200);
