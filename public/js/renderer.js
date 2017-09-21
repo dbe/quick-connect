@@ -7,6 +7,7 @@ function Renderer($play, game) {
   buildGrid(game.boardHeights);
   var coords = movesToCoords(game.moves, game.boardHeights.length, game.isPlayer0First);
 
+  this.numMoves = coords.length;
   this.playGame = function(endMove) {
     clear();
 

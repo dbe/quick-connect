@@ -14,9 +14,7 @@ html
       var game = !{game};
       var $play = $('.play');
       var renderer = new window.qc.Renderer($play, game);
-      var manager = new window.qc.RenderManager(renderer);
-
-      console.log(manager);
+      window.manager = new window.qc.RenderManager(renderer);
 
       manager.playByTime(200);
     });

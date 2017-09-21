@@ -4,15 +4,32 @@ window.qc.RenderManager = RenderManager;
 
 function RenderManager(renderer) {
   var gameStep = 0;
+  var maxStep = renderer.numMoves;
+  var timeoutId = null;
 
   this.playByTime = playByTime;
+  this.cancelPlayback = cancelPlayback;
 
-  function playByTime(time) {
+
+  function playByTime(time, loop) {
     console.log("In playByTime: ", gameStep);
-    console.log(playByTime);
     renderer.playGame(gameStep);
     gameStep++;
 
-    setTimeout(playByTime, time, time);
+    if(gameStep === maxStep + 1) {
+      if(loop) {
+        gameStep = 0;
+      }
+    }
+
+    if(gameStep <= maxStep) {
+      timeoutId = setTimeout(playByTime, time, time, loop);
+    }
+  }
+
+  function cancelPlayback() {
+    if(timeoutId !== null) {
+      clearTimeout(timeoutId);
+    }
   }
 }
