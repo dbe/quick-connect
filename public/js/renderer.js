@@ -1,10 +1,10 @@
 window.qc = window.qc || {};
 window.qc.Renderer = Renderer;
 
-function Renderer($play, game) {
+function Renderer($play, maxDimension, game) {
   PLAYER_TO_COLOR = ['red', 'black'];
 
-  buildGrid(game.boardHeights);
+  buildGrid(game.boardHeights, maxDimension);
   var coords = movesToCoords(game.moves, game.boardHeights.length, game.isPlayer0First);
 
   this.numMoves = coords.length;
@@ -50,7 +50,17 @@ function Renderer($play, game) {
     $('.circle').remove();
   }
 
-  function buildGrid(heights) {
+  function calculateBoxSize(heights, maxDimension) {
+    var maxCount = Math.max(heights.length, Math.max(...heights));
+    return Math.floor(maxDimension / maxCount);
+  }
+
+  function buildGrid(heights, maxDimension) {
+    var boxSize = calculateBoxSize(heights, maxDimension);
+    console.log("Box size: ", boxSize);
+
+    $(`<style type='text/css'> .box, .circle{width: ${boxSize}; height: ${boxSize}} </style>`).appendTo("head");
+
     heights.forEach(function(height, i) {
       appendCol(i, height);
     });

@@ -6,7 +6,7 @@ html
     script(src="/js/renderManager.js")
     script(src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous")
   body
-    .container
+    .container-fluid
       .game-area
         .play
         button(type="button" class="btn btn-lg autoplay-button") Autoplay
@@ -16,7 +16,11 @@ html
     $(function() {
       var game = !{game};
       var $play = $('.play');
-      var renderer = new window.qc.Renderer($play, game);
+      //-200 to leave room for controls
+      var maxDimension = Math.min(Math.min(window.innerWidth, window.innerHeight - 200), 1000);
+      console.log("Max Dimension: ", maxDimension);
+
+      var renderer = new window.qc.Renderer($play, maxDimension, game);
       window.manager = new window.qc.RenderManager(renderer);
 
       $(window).keydown(function(e) {
@@ -39,6 +43,4 @@ html
         }
 
       });
-
-      //manager.playByTime(200);
     });
