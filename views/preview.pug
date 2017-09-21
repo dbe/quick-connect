@@ -2,6 +2,7 @@ html
   head
     link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous")
     link(rel="stylesheet" href="/css/main.css")
+    script(src="/js/renderer.js")
     script(src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous")
   body
     .container
@@ -9,68 +10,13 @@ html
 
   script.
     $(function() {
-      PLAYER_TO_COLOR = ['red', 'black'];
+      var game = !{game};
+      var $play = $('.play');
+      var renderer = new window.qc.Renderer($play, game);
 
-      var game = !{game}
+      renderer.playGame(5);
+      renderer.playGame(2);
+
       console.log(game);
-
-      buildGrid(game.boardHeights);
-      playGame(game);
-
-
-      function playGame(game) {
-        var coords = movesToCoords(game.moves, game.boardHeights.length, game.isPlayer0First);
-        console.log(coords);
-
-        coords.forEach(function(coord) {
-          playMove(coord.col, coord.row, coord.player);
-        });
-      }
-
-      //Takes the moves list and converts it to a list of {col: int, row: int, player: int}
-      function movesToCoords(moves, numCols, isPlayer0First) {
-        var player = isPlayer0First ? 0 : 1;
-        var coords = [];
-        var colCounts = [];
-
-        for(var i = 0; i < numCols; i++) {
-          colCounts[i] = 0;
-        }
-
-        moves.forEach(function(move) {
-          var row = colCounts[move];
-          coords.push({col: move, row: row, player: player});
-
-          colCounts[move] = row + 1;
-          player = (player + 1) % 2;
-        });
-
-
-        return coords;
-      }
-
-      function playMove(col, row, player) {
-        $box = $(`.box[col=${col}][row=${row}]`);
-        $box.append(`<div class="circle ${PLAYER_TO_COLOR[player]}"></div>`);
-      }
-
-      //Setup html functions
-      function buildGrid(heights) {
-        heights.forEach(function(height, i) {
-          appendCol(i, height);
-        });
-      }
-
-      function appendCol(colNum, height) {
-        $('.play').append(generateCol(colNum, height));
-      }
-
-      function generateCol(colNum, height) {
-        var col = '<div class="play-col" col=' + colNum + '>';
-        for(var i = 0; i < height; i++) {
-          var rowNum = height - i - 1;
-          col += '<div class="box" row=' + rowNum + ' col=' + colNum + '></div>';
-        }
-        return col;
-      }
+      console.log(window.qc.Renderer);
     });
