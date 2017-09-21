@@ -3,6 +3,7 @@ html
     link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous")
     link(rel="stylesheet" href="/css/main.css")
     script(src="/js/renderer.js")
+    script(src="/js/renderManager.js")
     script(src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous")
   body
     .container
@@ -13,10 +14,9 @@ html
       var game = !{game};
       var $play = $('.play');
       var renderer = new window.qc.Renderer($play, game);
+      var manager = new window.qc.RenderManager(renderer);
 
-      renderer.playGame(5);
-      renderer.playGame(2);
+      console.log(manager);
 
-      console.log(game);
-      console.log(window.qc.Renderer);
+      manager.playByTime(200);
     });
