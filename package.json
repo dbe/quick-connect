@@ -2,8 +2,11 @@
   "name": "quick-connect",
   "version": "1.0.0",
   "dependencies": {
+    "body-parser": "^1.18.1",
+    "crypto-js": "^3.1.9-1",
     "express": "^4.15.4",
     "jayson": "^2.0.4",
+    "node-forge": "^0.7.1",
     "pg": "^7.3.0",
     "pg-hstore": "^2.3.2",
     "pug": "^2.0.0-rc.4",

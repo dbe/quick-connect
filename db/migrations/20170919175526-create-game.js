@@ -12,10 +12,10 @@ module.exports = {
         type: Sequelize.UUID
       },
       player0Id: {
-        type: Sequelize.UUID
+        type: Sequelize.INTEGER
       },
       player1Id: {
-        type: Sequelize.UUID
+        type: Sequelize.INTEGER
       },
       isPlayer0First: {
         type: Sequelize.BOOLEAN

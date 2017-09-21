@@ -1,4 +1,4 @@
-import { sequelize, Game } from '../db/models';
+import { sequelize, Game, User } from '../db/models';
 
 const uuidv4 = require('uuid/v4');
 const service = {
@@ -23,20 +23,26 @@ function getOpenGames(args, callback) {
   });
 }
 
-//Expects: args: {gameId: uuid}
+//Expects: args: {gameId: uuid, userName: string, password: string}
 //Returns: {playerId: uuid} if successfully joined
 //Throws: CannotJoin
 //TODO: Clean this up, add transactions to avoid race conditions
 function joinGame(args, callback) {
-  Game.find({where: {gameId: args.gameId}}).then(game => {
-    if(game.player1Id !== null) {
-      callback({code: 500, message: "Game was already full."});
-    } else {
-      game.update({player1Id: uuidv4()}).then((updatedGame) => {
-        callback(null, {playerId: updatedGame.player1Id});
+  User.login(args.userName, args.password,
+    (user) => {
+      Game.find({where: {gameId: args.gameId}}).then(game => {
+        if(game.player1Id !== null) {
+          callback({code: 500, message: "Game was already full."});
+        } else {
+          game.update({player1Id: user.userId}).then((updatedGame) => {
+            callback(null, {playerId: updatedGame.player1Id});
+          });
+        }
       });
-    }
-  });
+    },
+    () => {
+      callback({code: 500, message: "Invalid login"});
+    })
 }
 
 //Expects no args
