@@ -20,6 +20,12 @@ app.get('/preview/:gameId', function (req, res) {
   });
 });
 
+app.get('/command', function (req, res) {
+  Game.findAll({limit: 8}).then(games => {
+    res.render('command', {games: games.map(game => JSON.stringify(game.gameState()) )});
+  });
+});
+
 app.get('/api/v1/games', function (req, res) {
   Game.findAll().then(games => {
     res.setHeader('Content-Type', 'application/json');

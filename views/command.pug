@@ -11,7 +11,7 @@ html
 
   script.
     $(function() {
-      var game = !{game};
+      var game = !{games[0]};
       var $play = $('.play');
       var renderer = new window.qc.Renderer($play, game);
       window.manager = new window.qc.RenderManager(renderer);
