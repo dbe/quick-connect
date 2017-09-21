@@ -61,9 +61,6 @@ function Renderer($play, maxDimension, game) {
 
     var rule = `<style type='text/css'> #${$play.attr('id')} .box, .circle {width: ${boxSize}; height: ${boxSize}} #${$play.attr('id')} {width: ${width}} </style>`;
     $('html > head').append(rule);
-    console.log(rule)
-    // $(`<style type='text/css'> #${$play.attr('id')} .box, .circle {width: ${boxSize}; height: ${boxSize}} #${$play.attr('id')} {width: ${width}} </style>`).appendTo("head");
-    // $(`<style type='text/css'> #${$play.attr('id')} .box, .circle {width: ${boxSize}px; height: ${boxSize}px; } </style>`).appendTo("head");
 
     heights.forEach(function(height, i) {
       appendCol(i, height);
@@ -75,7 +72,6 @@ function Renderer($play, maxDimension, game) {
   }
 
   function generateCol(colNum, height) {
-    console.log("Generate col")
     var col = `<div class="play-col" col=${colNum}>`;
 
     for(var i = 0; i < height; i++) {
