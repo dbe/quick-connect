@@ -15,12 +15,38 @@ html
       console.log(game);
 
       buildGrid(game.boardHeights);
-      playGame(game.moves);
+      playGame(game);
 
 
-      function playGame(moves) {
-        playMove(0, 0, 0);
-        playMove(0, 1, 1);
+      function playGame(game) {
+        var coords = movesToCoords(game.moves, game.boardHeights.length, game.isPlayer0First);
+        console.log(coords);
+
+        coords.forEach(function(coord) {
+          playMove(coord.col, coord.row, coord.player);
+        });
+      }
+
+      //Takes the moves list and converts it to a list of {col: int, row: int, player: int}
+      function movesToCoords(moves, numCols, isPlayer0First) {
+        var player = isPlayer0First ? 0 : 1;
+        var coords = [];
+        var colCounts = [];
+
+        for(var i = 0; i < numCols; i++) {
+          colCounts[i] = 0;
+        }
+
+        moves.forEach(function(move) {
+          var row = colCounts[move];
+          coords.push({col: move, row: row, player: player});
+
+          colCounts[move] = row + 1;
+          player = (player + 1) % 2;
+        });
+
+
+        return coords;
       }
 
       function playMove(col, row, player) {

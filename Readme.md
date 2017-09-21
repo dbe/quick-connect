@@ -30,14 +30,16 @@ The express server also serves game data in json at the endpoint /api/v1/games
 - joinGame(gameId) -> {playerId:uuid} throws CannotJoin
 - createGame() -> {gameId: uuid, playerId: uuid}
 - getGameState(gameId:uuid) -> GameState
-- makeMove(gameId: uuid, playerId: uuid, moves: List<int>) -> status:string throws InvalidMove
+- makeMove(gameId: uuid, playerId: uuid, moves: List<int>) -> status:string ({code: 200} or {code: 600}) throws InvalidMove
 
 GameState: {
   gameId: uuid,
-  isPlayer0First: boolean,  
+  isPlayer0First: boolean,
   boardHeights: List<int>,  
   winCondition: List<int>,  
   moves: List<int>  
+  gameOver: boolean,
+  isPlayer0Winner: boolean (nullable for draw)
 }
 
 Example GameState: {  
