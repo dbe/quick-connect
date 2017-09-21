@@ -10,13 +10,13 @@ app.use(express.static(__dirname + '/../public'));
 
 app.get('/', function (req, res) {
   Game.findAll().then(games => {
-    res.render('index', {games});
+    res.render('index', {games, gameStates: games.map(game => JSON.stringify(game.gameState()) )});
   });
 });
 
 app.get('/preview/:gameId', function (req, res) {
   Game.find({where: {gameId: req.params.gameId}}).then(game => {
-    res.render('preview', {game: JSON.stringify(game.gameState())});
+    res.render('preview', {game, gameState: JSON.stringify(game.gameState())});
   });
 });
 

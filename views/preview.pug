@@ -8,13 +8,13 @@ html
   body
     .container-fluid
       .game-area
-        .play
+        .play(id=game.gameId)
         button(type="button" class="btn btn-lg autoplay-button") Autoplay
         p Left and right arrows to step, spacebar to toggle autoplay.
 
   script.
     $(function() {
-      var game = !{game};
+      var game = !{gameState};
       var $play = $('.play');
       //-200 to leave room for controls
       var maxDimension = Math.min(Math.min(window.innerWidth, window.innerHeight - 200), 1000);

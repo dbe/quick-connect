@@ -1,6 +1,10 @@
 html
   head
-    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous")
+    link(rel="stylesheet" href="/css/bootstrap.min.css")
+    link(rel="stylesheet" href="/css/main.css")
+    script(src="/js/renderer.js")
+    script(src="/js/renderManager.js")
+    script(src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous")
   body
     div(class="container")
       table(class="table")
@@ -15,6 +19,7 @@ html
             th moves
             th game over?
             th View game
+            th Game
         tbody
         each game in games
           tr
@@ -27,3 +32,20 @@ html
             td= game.moves
             td= game.isStarted() && game.isGameOver()
             td <a href="/preview/#{game.gameId}">Link</a>
+            td
+              .play(id=game.gameId)
+
+  script.
+    $(function() {
+      var games = [!{gameStates}];
+      var maxDimension = 100;
+
+      games.forEach(function(game) {
+        var $play = $(`.play#${game.gameId}`);
+        console.log($play);
+        
+        var renderer = new window.qc.Renderer($play, maxDimension, game);
+        var manager = new window.qc.RenderManager(renderer);
+        manager.playByTime(200, true);
+      });
+    });
