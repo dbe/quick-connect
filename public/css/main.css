@@ -5,6 +5,12 @@
 .play {
   margin-left: auto;
   margin-right: auto;
+  text-align: center;
+}
+
+.play.command {
+  margin: 10px;
+  display: inline-block;
 }
 
 .autoplay-button {

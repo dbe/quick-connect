@@ -9,7 +9,7 @@ app.set('view engine', 'pug');
 app.use(express.static(__dirname + '/../public'));
 
 app.get('/', function (req, res) {
-  Game.findAll().then(games => {
+  Game.findAll({limit: 20}).then(games => {
     res.render('index', {games, gameStates: games.map(game => JSON.stringify(game.gameState()) )});
   });
 });
@@ -21,8 +21,8 @@ app.get('/preview/:gameId', function (req, res) {
 });
 
 app.get('/command', function (req, res) {
-  Game.findAll({limit: 8}).then(games => {
-    res.render('command', {games: games.map(game => JSON.stringify(game.gameState()) )});
+  Game.findAll({limit: 100}).then(games => {
+    res.render('command', {games, gameStates: games.map(game => JSON.stringify(game.gameState()) )});
   });
 });
 

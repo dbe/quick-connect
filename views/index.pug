@@ -17,7 +17,6 @@ html
             th Board Heights
             th winCondition
             th moves
-            th game over?
             th View game
             th Game
         tbody
@@ -30,7 +29,6 @@ html
             td= game.boardHeights
             td= game.winCondition
             td= game.moves
-            td= game.isStarted() && game.isGameOver()
             td <a href="/preview/#{game.gameId}">Link</a>
             td
               .play(id="game-" + game.gameId)
@@ -42,9 +40,6 @@ html
 
       games.forEach(function(game, i) {
         var $play = $(`.play#game-${game.gameId}`);
-        console.log($play);
-        console.log(game);
-
         var renderer = new window.qc.Renderer($play, maxDimension, game);
         var manager = new window.qc.RenderManager(renderer);
         manager.playByTime(200, true);
