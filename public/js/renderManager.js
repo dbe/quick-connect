@@ -8,6 +8,7 @@ function RenderManager(renderer) {
   var timeoutId = null;
 
   this.playByTime = playByTime;
+  this.stepGame = stepGame;
   this.cancelPlayback = cancelPlayback;
 
 
@@ -25,6 +26,17 @@ function RenderManager(renderer) {
     if(gameStep <= maxStep) {
       timeoutId = setTimeout(playByTime, time, time, loop);
     }
+  }
+
+  function stepGame(step) {
+    var nextStep = gameStep + step;
+
+    if(nextStep < 0 || nextStep > maxStep) {
+      return;
+    }
+
+    gameStep = nextStep;
+    renderer.playGame(gameStep);
   }
 
   function cancelPlayback() {
