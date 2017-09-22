@@ -1,7 +1,5 @@
 var jayson = require('jayson');
 var express = require('express')
-var forge = require('node-forge');
-var uuidv4 = require('uuid/v4');
 var bodyParser = require('body-parser')
 
 import { sequelize, Game, User } from '../db/models';
@@ -40,21 +38,17 @@ app.get('/api/v1/games', function (req, res) {
   });
 });
 
-app.get('/register', function (req, res) {
+app.get('/user/new', function (req, res) {
   res.render('register');
 });
 
-app.post('/register', function (req, res) {
-  var md = forge.md.sha256.create();
-  md.update(req.body['password']);
-  User.create({
-    userId: uuidv4(),
-    userName: req.body['username'],
-    passwordHash: md.digest().toHex()
-  }).then(user => {
+app.post('/user', function (req, res) {
+  User.createWithPassword(req.body['username'], req.body['password']).then(user => {
     res.render('welcome', {user});
+  }).catch(err => {
+    //TODO: Handle other cases rather than assuming all errors are username are taken
+    res.render('register', {error: "Username already taken"});
   });
-  // redirect to ?
 });
 
 app.listen(3002);

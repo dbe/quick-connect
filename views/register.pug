@@ -1,11 +1,17 @@
-p Create Account
-form(action="/register" method="post")
-  div
-    label(Username:)
-    input(type="text" name="username")
-  div
-    label(Password:)
-    input(type="password" name="password")
-  div
-    input(type="submit" value="Create Account")
+extends layout.pug
 
+block content
+  .container
+    .form-box
+      h1(class="form-title") Create Account
+      form(action="/user" method="post")
+        - var userClass = error ? "has-danger" : ""
+        div(class="form-group " + userClass)
+          label(for="username") Username
+          input(type="text" class="form-control" id="username" name="username" placeholder="Enter Username")
+          .form-control-feedback= error
+        div(class="form-group")
+          label(for="password") Password
+          input(type="password" class="form-control" id="password" name="password" placeholder="Enter Password")
+        div(class="form-group")
+          button(type="submit" class="btn btn-primary") Submit

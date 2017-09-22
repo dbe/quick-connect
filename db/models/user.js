@@ -1,5 +1,6 @@
 'use strict';
 var forge = require('node-forge');
+var uuidv4 = require('uuid/v4');
 
 module.exports = (sequelize, DataTypes) => {
   const KEY = 'the best way to protect the humans is to destroy them';
@@ -8,6 +9,18 @@ module.exports = (sequelize, DataTypes) => {
     userName: DataTypes.STRING,
     passwordHash: DataTypes.STRING
   });
+
+  User.createWithPassword = function(username, password) {
+    return User.create({
+      userId: uuidv4(),
+      userName: username,
+      passwordHash: User.hashPassword(password)
+    })
+  }
+
+  User.hashPassword = function(password) {
+    return forge.md.sha256.create().update(password).digest().toHex();
+  }
 
   User.login = (userName, password, successCallback, failureCallback) => {
     User.findByUserName(userName).then(user => {
@@ -26,12 +39,7 @@ module.exports = (sequelize, DataTypes) => {
   User.prototype.validPassword = (user, password) => {
     var md = forge.md.sha256.create();
     md.update(password);
-    // console.log(md.digest().toHex());
-    // console.log(user.passwordHash);
-    // console.log(user.passwordHash === md.digest().toHex());
-    // console.log(user.passwordHash == md.digest().toHex());
-    console.log(user.passwordHash.length);
-    // console.log(md.digest().toHex().length);
+
     if (user.passwordHash === md.digest().toHex()) {
       return true;
     } else {
