@@ -6,8 +6,8 @@ const uuidv4 = require('uuid/v4');
 module.exports = (sequelize, DataTypes) => {
   var Game = sequelize.define('Game', {
     gameId: DataTypes.UUID,
-    player0Id: DataTypes.UUID,
-    player1Id: DataTypes.UUID,
+    player0: DataTypes.STRING,
+    player1: DataTypes.STRING,
     isPlayer0First: DataTypes.BOOLEAN,
     boardHeights: DataTypes.ARRAY(DataTypes.INTEGER),
     winCondition: DataTypes.ARRAY(DataTypes.INTEGER),
@@ -18,18 +18,18 @@ module.exports = (sequelize, DataTypes) => {
     return Game.find({where: {gameId: gameId}});
   }
 
-  Game.findByGameAndPlayerId = function(gameId, playerId) {
+  Game.findByGameAndUserName = function(gameId, userName) {
     return Game.find({where: {
       gameId: gameId,
       $or: [
         {
-          player0Id: {
-            $eq: playerId
+          player0: {
+            $eq: userName
           }
         },
         {
-          player1Id: {
-            $eq: playerId
+          player1: {
+            $eq: userName
           }
         }
       ]
@@ -51,19 +51,19 @@ module.exports = (sequelize, DataTypes) => {
   //Filters out games that player is already a part of
   function eligibleGamesForUser(games, user) {
     return games.filter(game => {
-      return game.player0Id !== user.userId && game.player0Id != user.userId;
+      return game.player0 !== user.userName && game.player1 != user.userName;
     })
   }
 
   Game.findAllEmpty = function() {
-    return Game.findAll({where: {player1Id: null}});
+    return Game.findAll({where: {player1: null}});
   }
 
   Game.createGameWithUser = function(user) {
     return Game.create({
       gameId: uuidv4(),
-      player0Id: user.userId,
-      player1Id: null,
+      player0: user.userName,
+      player1: null,
       isPlayer0First: true,
       boardHeights: [8,8,8,8,8,8,8],
       winCondition: [4],
@@ -72,7 +72,7 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Game.prototype.addUserToGame = function(user) {
-    return this.update({player1Id: user.userId});
+    return this.update({player1: user.userName});
   }
 
   //Given moves by a player, make sure that they match up, and extract which "move" they want to make
@@ -91,8 +91,8 @@ module.exports = (sequelize, DataTypes) => {
     return moves[moves.length - 1];
   }
 
-  Game.prototype.isPlayerTurnById = function(playerId) {
-    let isPlayer0 = this.player0Id === playerId;
+  Game.prototype.isUserTurnByUserName = function(userName) {
+    let isPlayer0 = this.player0 === userName;
 
     return isPlayer0 === this.isPlayer0Turn();
   }
@@ -104,7 +104,7 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Game.prototype.isStarted = function() {
-    return this.player0Id !== null && this.player1Id !== null;
+    return this.player0 !== null && this.player1 !== null;
   }
 
   Game.prototype.isGameOver = function () {

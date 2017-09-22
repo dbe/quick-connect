@@ -44,7 +44,7 @@ function getGameState(args, callback) {
 //Expects: {gameId: uuid, playerId: uuid, moves: List<int>}
 //Returns: {status: string}
 function makeMove(args, callback) {
-  Game.findByGameAndPlayerId(args.gameId, args.playerId).then(game => {
+  Game.findByGameAndUserName(args.gameId, args.userName).then(game => {
     if(game === null) {
       return callback({code: 500, message: "Could not find game"});
     }
@@ -58,7 +58,7 @@ function makeMove(args, callback) {
       return callback({code: 500, message: `Cannot make move. Game is over: ${gameOver.message}`});
     }
 
-    if(!game.isPlayerTurnById(args.playerId)) {
+    if(!game.isUserTurnByUserName(args.userName)) {
       return callback({code: 500, message: "It is not your turn."});
     }
 

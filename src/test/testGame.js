@@ -23,16 +23,16 @@ test('returns isPlayer0Turn correctly when player0 is not first', t => {
   t.false(game.isPlayer0Turn());
 });
 
-test('playerTurnById works', t => {
+test('isUserTurnByUserName works', t => {
   let game = Game.build({
     moves: [],
     isPlayer0First: true,
-    player0Id: 'player0',
-    player1Id: 'player1'
+    player0: 'player0',
+    player1: 'player1'
   });
 
-  t.true(game.isPlayerTurnById('player0'));
-  t.false(game.isPlayerTurnById('player1'));
+  t.true(game.isUserTurnByUserName('player0'));
+  t.false(game.isUserTurnByUserName('player1'));
 });
 
 test('calculates moveCountForCol', t => {
