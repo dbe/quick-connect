@@ -59,3 +59,15 @@
 .alert {
   text-align: center;
 }
+
+.player-name.winner {
+  color: green;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.player-name.loser {
+  color: red;
+  font-weight: bold;
+  font-size: 16px;
+}

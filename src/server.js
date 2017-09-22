@@ -15,7 +15,8 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 
 app.get('/', function (req, res) {
-  Game.findAll({limit: 20}).then(games => {
+  Game.findAll({limit: 20, order: [['updatedAt', 'DESC']]}).then(games => {
+    console.log(games);
     var response = {
       games,
       gameStates: games.map(game => JSON.stringify(game.gameState()))
@@ -62,9 +63,7 @@ app.get('/user', function (req, res) {
   on "Users"."userName" = maxrating."userName";
   `;
 
-
   sequelize.query(query, { type: sequelize.QueryTypes.SELECT}).then(users => {
-    console.log(users)
     let usersJson = users.map(user => {
       user.identiconHash = User.identiconHash(user.userName);
       return JSON.stringify(user);
@@ -72,11 +71,6 @@ app.get('/user', function (req, res) {
 
     res.render('user_index', {users, usersJson});
   });
-
-  // User.findAll().then(users => {
-
-  //   res.render('user_index', {users, usersJson});
-  // })
 });
 
 app.get('/user/:userName', function (req, res) {

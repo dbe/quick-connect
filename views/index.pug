@@ -7,25 +7,17 @@ block content
     table(class="table")
       thead
         tr
-          th GameId
+          th Game Number
           th Player 0
           th Player 1
-          th Is Player 0 first?
-          th Board Heights
-          th winCondition
-          th moves
           th View game
           th Game
       tbody
       each game in games
-        tr
-          td= game.gameId
-          td= game.player0
-          td= game.player1
-          td= game.isPlayer0First
-          td= game.boardHeights
-          td= game.winCondition
-          td= game.moves
+        tr(id=game.gameId)
+          td= game.id
+          td(class="player-name player0-name")= game.player0
+          td(class="player-name player1-name")= game.player1
           td <a href="/preview/#{game.gameId}">Link</a>
           td
             .play(id="game-" + game.gameId)
@@ -36,6 +28,18 @@ block content
       var maxDimension = 100;
 
       games.forEach(function(game, i) {
+        if(!(game.isPlayer0Winner === null)) {
+          var winner = game.isPlayer0Winner ? 0 : 1;
+          var loser = game.isPlayer0Winner ? 1 : 0;
+
+          var $winner = $(`tr#${game.gameId} > td.player${winner}-name`);
+          var $loser = $(`tr#${game.gameId} > td.player${loser}-name`);
+
+          $winner.addClass('winner');
+          $loser.addClass('loser');
+
+        }
+
         var $play = $(`.play#game-${game.gameId}`);
         var renderer = new window.qc.Renderer($play, maxDimension, game);
         var manager = new window.qc.RenderManager(renderer);
