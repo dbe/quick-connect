@@ -60,7 +60,9 @@ app.get('/user', function (req, res) {
 
 app.get('/user/:userName', function (req, res) {
   User.findByUserName(req.params.userName).then(user => {
-    res.render('user_show', {user});
+    user.rating().then(rating => {
+      res.render('user_show', {user, rating});
+    })
   })
 });
 

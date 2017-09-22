@@ -43,8 +43,8 @@ GameState: {
 }
 
 
-ELO:
+Rating:
 gameId
 userName
 opponent
-elo
+rating

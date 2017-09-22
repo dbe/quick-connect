@@ -3,6 +3,7 @@ var forge = require('node-forge');
 var Promise = require("bluebird");
 
 module.exports = (sequelize, DataTypes) => {
+  var Rating = sequelize.models.Rating;
   const KEY = 'the best way to protect the humans is to destroy them';
   var User = sequelize.define('User', {
     userName: DataTypes.STRING,
@@ -23,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
   User.login = (userName, password) => {
     return new Promise(function(resolve, reject) {
       User.findByUserName(userName).then(user => {
-        if (user && user.validPassword(user, password)) {
+        if (user && user.validPassword(password)) {
           resolve(user);
         } else {
           reject();
@@ -36,8 +37,18 @@ module.exports = (sequelize, DataTypes) => {
     return User.find({ where: {userName}});
   }
 
-  User.prototype.validPassword = (user, password) => {
-    return user.passwordHash === User.hashPassword(password);
+  User.prototype.validPassword = (password) => {
+    return this.passwordHash === User.hashPassword(password);
+  }
+
+  User.prototype.rating = function() {
+    return Rating.findAll({
+      where: {userName: this.userName},
+      limit: 1,
+      order: [['createdAt', 'DESC']]
+    }).then(ratings => {
+      return ratings.length > 0 ? ratings[0] : Rating.DEFAULT_RATING;
+    });
   }
 
   return User;
