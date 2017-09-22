@@ -58,6 +58,7 @@ function Renderer($play, maxDimension, game) {
   function buildGrid(maxDimension, heights) {
     var boxSize = calculateBoxSize(heights, maxDimension);
     var width = (boxSize+2) * heights.length;
+    console.log(boxSize);
 
     var rule = `<style type='text/css'> #${$play.attr('id')} .box, .circle {width: ${boxSize}; height: ${boxSize}} #${$play.attr('id')} {width: ${width}} </style>`;
     $('html > head').append(rule);
