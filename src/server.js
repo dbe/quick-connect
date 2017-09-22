@@ -52,6 +52,18 @@ app.get('/user/new', function (req, res) {
   res.render('register');
 });
 
+app.get('/user', function (req, res) {
+  User.findAll().then(users => {
+    res.render('user_index', {users});
+  })
+});
+
+app.get('/user/:id', function (req, res) {
+  User.findById(req.params.id).then(user => {
+    res.render('user_show', {user});
+  })
+});
+
 app.post('/user', function (req, res) {
   User.createWithPassword(req.body['username'], req.body['password']).then(user => {
     res.redirect('/?regSuccess=true');
