@@ -15,7 +15,8 @@ var request = Promise.promisify(client.request, {context: client});
 console.log("Connected to server on port: ", PORT);
 
 joinGame(userName, password).then(gameId => {
-  play(gameId);
+  console.log(gameId)
+  // play(gameId);
 })
 
 function play(gameId) {

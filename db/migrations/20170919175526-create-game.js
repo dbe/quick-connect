@@ -11,11 +11,11 @@ module.exports = {
       gameId: {
         type: Sequelize.UUID
       },
-      player0Id: {
-        type: Sequelize.INTEGER
+      player0: {
+        type: Sequelize.STRING
       },
-      player1Id: {
-        type: Sequelize.INTEGER
+      player1: {
+        type: Sequelize.STRING
       },
       isPlayer0First: {
         type: Sequelize.BOOLEAN

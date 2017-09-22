@@ -8,8 +8,8 @@ block content
       thead
         tr
           th GameId
-          th Player 0 Id
-          th Player 1 Id
+          th Player 0
+          th Player 1
           th Is Player 0 first?
           th Board Heights
           th winCondition
@@ -20,8 +20,8 @@ block content
       each game in games
         tr
           td= game.gameId
-          td= game.player0Id
-          td= game.player1Id
+          td= game.player0
+          td= game.player1
           td= game.isPlayer0First
           td= game.boardHeights
           td= game.winCondition

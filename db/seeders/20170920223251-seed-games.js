@@ -1,17 +1,13 @@
 'use strict';
 var uuidv4 = require('uuid/v4');
-console.log("In seed games")
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
-
-
     let games = [];
     for(let i = 0; i < 100; i++) {
       let sampleGame = {
         gameId: uuidv4(),
-        player0Id: uuidv4(),
-        player1Id: uuidv4(),
+        player0: 'Player 0',
+        player1: 'Player 1',
         isPlayer0First: true,
         boardHeights: [8, 8, 8, 8, 8, 8, 8],
         winCondition: [4],
@@ -19,7 +15,7 @@ module.exports = {
         "createdAt": new Date(),
         "updatedAt": new Date()
       };
-      
+
       games.push(sampleGame);
     }
 
