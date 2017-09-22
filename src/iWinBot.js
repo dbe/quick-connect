@@ -21,12 +21,23 @@ joinGame(userName, password).then(gameId => {
 
 function play(gameId) {
   waitForMyTurn(gameId).then(gameState => {
-    console.log("My turn!");
-    console.log(gameState);
-    // makeMove(gameId, decideMove(gameState)).then(() => {
-    //   play(gameId));
-    // }
+    console.log(`gameState.isGameOver: ${gameState.isGameOver}`);
+    if(!gameState.isGameOver) {
+      makeMove(gameId, decideMove(gameState)).then(() => {
+        play(gameId);
+      });
+    }
   });
+}
+
+function makeMove(gameId, moves) {
+  return request('makeMove', {gameId, userName, password, moves}).then(resp => {
+    return resp.result;
+  });
+}
+
+function decideMove(gameState) {
+  return gameState.moves.concat(0);
 }
 
 function waitForMyTurn(gameId) {
@@ -37,11 +48,10 @@ function waitForMyTurn(gameId) {
 
 function pollUntilMyTurn(gameId, resolve) {
   getGameState(gameId).then(gameState => {
-    console.log(`gameState.isStarted: ${gameState.isStarted}`);
-    console.log(`isMyTurn(gameState): ${isMyTurn(gameState)}`);
     if(gameState.isStarted && isMyTurn(gameState)) {
       resolve(gameState);
     } else {
+      console.log("Still not my turn");
       setTimeout(pollUntilMyTurn, 1000, gameId, resolve);
     }
   });

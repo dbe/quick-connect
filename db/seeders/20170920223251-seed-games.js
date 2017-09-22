@@ -19,7 +19,7 @@ module.exports = {
       games.push(sampleGame);
     }
 
-    return queryInterface.bulkInsert('Games', games, {});
+    // return queryInterface.bulkInsert('Games', games, {});
   },
 
   down: (queryInterface, Sequelize) => {

@@ -142,6 +142,7 @@ module.exports = (sequelize, DataTypes) => {
       player0: this.player0,
       player1: this.player1,
       isStarted: this.isStarted(),
+      isGameOver: this.isGameOver(),
       boardHeights: this.boardHeights,
       winCondition: this.winCondition,
       moves: this.moves
