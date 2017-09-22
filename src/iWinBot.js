@@ -21,7 +21,6 @@ joinGame(userName, password).then(gameId => {
 
 function play(gameId) {
   waitForMyTurn(gameId).then(gameState => {
-    console.log(gameState);
     console.log(`gameState.isGameOver: ${gameState.isGameOver}`);
     if(!gameState.isGameOver) {
       makeMove(gameId, decideMove(gameState)).then(() => {
@@ -80,5 +79,5 @@ function isPlayer0Turn(gameState) {
 }
 
 function decideMove(gameState) {
-  return gameState.moves.concat(0);
+  return gameState.moves.concat(Math.floor(Math.random() * gameState.boardHeights.length));
 }

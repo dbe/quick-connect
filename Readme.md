@@ -33,16 +33,11 @@ The express server also serves game data in json at the endpoint /api/v1/games
 GameState: {
   gameId: uuid,
   isPlayer0First: boolean,
+  player0: string,
+  player1: string,
   boardHeights: List<int>,  
   winCondition: List<int>,  
   moves: List<int>  
-  gameOver: boolean,
+  isGameOver: boolean,
   isPlayer0Winner: boolean (nullable for draw)
 }
-
-Example GameState: {  
-  isPlayer0First: true,  
-  boardHeights: [4, 4, 4, 4, 4], //5x4 grid (width of 5, height of 4)  
-  winCondition: [4], //Just get 4 in a row  
-  moves: [0, 1, 4, 4, 2] //Player 0 placed in column 0, 4, and 2. Player 1 placed in columns 1 and 4.  
-}  

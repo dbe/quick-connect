@@ -122,6 +122,11 @@ module.exports = (sequelize, DataTypes) => {
       return false;
     }
 
+    //Handles case where numbers are not whole
+    if(Math.floor(move) !== move) {
+      return false;
+    }
+
     if(this.moveCountForCol(move) >= this.boardHeights[move]) {
       return false;
     }
