@@ -2,6 +2,30 @@ extends layout.pug
 
 block content
   .container
-    each user in users
-      p
-        a(href="/user/" + user.userName)= user.userName
+    table(class="table")
+      thead
+        tr
+          th Identicon
+          th Player Profile
+          th Games Played
+          th ELO
+      tbody
+      each user in users
+        tr
+          td
+            div(id=user.userName + "-identicon")
+          td
+            a(href="/user/" + user.userName)= user.userName
+          td Insert games
+          td insert elo
+
+  script.
+    $(function() {
+      var users = [!{usersJson}];
+      users.forEach(user => {
+        var data = new Identicon(user.identiconHash, 100).toString();
+        $img = `<img width=100 height=100 src="data:image/png;base64,${data}">`;
+        var oreo = $(`${user.userName}-identicon`);
+        $(`#${user.userName}-identicon`).append($img)
+      });
+    });

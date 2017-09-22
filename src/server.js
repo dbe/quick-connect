@@ -54,15 +54,20 @@ app.get('/user/new', function (req, res) {
 
 app.get('/user', function (req, res) {
   User.findAll().then(users => {
-    res.render('user_index', {users});
+    let usersJson = users.map(user => {
+      let values = user.dataValues;
+      values.identiconHash = user.identiconHash();
+      return JSON.stringify(values);
+    });
+    res.render('user_index', {users, usersJson});
   })
 });
 
 app.get('/user/:userName', function (req, res) {
   User.findByUserName(req.params.userName).then(user => {
-    user.rating().then(rating => {
-      res.render('user_show', {user, rating});
-    })
+    user.ratings().then(ratings => {
+      res.render('user_show', {user, ratings: JSON.stringify(ratings)});
+    });
   })
 });
 

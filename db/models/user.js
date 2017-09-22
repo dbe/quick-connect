@@ -55,5 +55,13 @@ module.exports = (sequelize, DataTypes) => {
     return User.ratingByUserName(this.userName);
   }
 
+  User.prototype.ratings = function() {
+    return Rating.findAll({where: {userName: this.userName}});
+  }
+
+  User.prototype.identiconHash = function() {
+    return forge.md.sha256.create().update(this.userName).digest().toHex();
+  }
+
   return User;
 }

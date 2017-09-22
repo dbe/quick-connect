@@ -32,8 +32,6 @@ function getGameState(args, callback) {
   });
 }
 
-//Expects: {gameId: uuid, playerId: uuid, moves: List<int>}
-//Returns: {status: string}
 function makeMove(args, callback) {
   loginOrFail(args.userName, args.password, callback).then(user => {
     Game.findByGameAndUserName(args.gameId, user.userName).then(game => {

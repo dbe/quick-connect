@@ -3,4 +3,61 @@ extends layout.pug
 block content
   .container
     p=user.userName
-    p=rating
+
+    each rating in ratings
+      p=rating.rating
+
+    #myDiv
+
+  script.
+    $(function() {
+      var ratings = !{ratings};
+      console.log(ratings);
+
+      let x = [];
+      let y = [];
+
+      ratings.forEach((rating, i) => {
+        x.push(i + 1);
+        y.push(rating.rating);
+      });
+
+      var trace1 = {
+        x,
+        y,
+        type: 'scatter',
+        marker: {
+          size: 7,
+          line: {width: 5.5},
+          opacity: 0.8,
+        },
+      }
+
+      var data = [trace1];
+
+      var layout = {
+        xaxis: {
+          autotick: false,
+          ticks: 'outside',
+          tick0: 0,
+          ticklen: 8,
+          tickwidth: 4,
+          tickcolor: 'blue'
+        },
+        yaxis: {
+          autotick: true,
+          title: "Elo rating",
+          titlefont: {
+            family: 'Arial, sans-serif',
+            size: 18,
+            color: 'lightgrey'
+          },
+          tickfont: {
+            size: 16,
+            color: 'black'
+          },
+        }
+      };
+
+      Plotly.newPlot('myDiv', data, layout);
+    });
