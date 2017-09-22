@@ -8,15 +8,70 @@ if(!userName || !password) {
 }
 
 var jayson = require('jayson');
+var Promise = require("bluebird");
 var PORT = 3001;
 var client = jayson.client.http({port: PORT});
+var request = Promise.promisify(client.request, {context: client});
 console.log("Connected to server on port: ", PORT);
 
-client.request('joinGame', {userName, password}, (err, res) => {
-  console.log(res);
-});
+joinGame(userName, password).then(gameId => {
+  play(gameId);
+})
+
+function play(gameId) {
+  waitForMyTurn(gameId).then(gameState => {
+    console.log("My turn!");
+    console.log(gameState);
+    // makeMove(gameId, decideMove(gameState)).then(() => {
+    //   play(gameId));
+    // }
+  });
+}
 
 
+
+function waitForMyTurn(gameId) {
+  return new Promise((resolve) => {
+    pollUntilMyTurn(gameId, resolve);
+  });
+}
+
+function pollUntilMyTurn(gameId, resolve) {
+  getGameState(gameId).then(gameState => {
+    if(gameState.isStarted && isMyTurn(gameState)) {
+      resolve(gameState);
+    } else {
+      setTimeout(pollUntilMyTurn, 1000, gameId, resolve);
+    }
+  });
+}
+
+function getGameState(gameId) {
+  return request('getGameState', {gameId}).then(resp => {
+    return resp.result;
+  });
+}
+
+function joinGame(userName, password) {
+  return request('joinGame', {userName, password}).then(resp => {
+    return resp.result.gameId;
+  });
+}
+
+
+
+//Pure Game Logic Code
+function isMyTurn(gameState) {
+  return amIplayer0 === gameState.isPlayer0Turn;
+}
+
+function amIplayer0(gameState) {
+  return gameState.player0UserName === userName;
+}
+
+function isPlayer0Turn(gameState) {
+  return gameState.moves.length % 2 === 0;
+}
 
 
 // function logGenericResult(procedureName, args, client) {

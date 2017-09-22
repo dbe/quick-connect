@@ -1,7 +1,7 @@
 import { sequelize, Game, User } from '../db/models';
-
 const uuidv4 = require('uuid/v4');
 const Promise = require("bluebird");
+
 const service = {
   echo,
   getOpenGames,
@@ -23,19 +23,6 @@ function getOpenGames(args, callback) {
   });
 }
 
-function loginOrFail(userName, password, callback) {
-  return new Promise(function(resolve, reject) {
-    User.login(userName, password).then(user => {
-      resolve(user);
-    }).catch(err => {
-      callback({code: 500, message: "Invalid login"});
-    });
-  });
-}
-
-//Expects: args: {gameId: uuid, userName: string, password: string}
-//Returns: {playerId: uuid} if successfully joined
-//Throws: CannotJoin
 //TODO: Clean this up, add transactions to avoid race conditions
 function joinGame(args, callback) {
   loginOrFail(args.userName, args.password, callback).then(user => {
@@ -83,6 +70,18 @@ function makeMove(args, callback) {
     game.makeMove(move);
     game.update({moves: game.moves}).then(game => {
       return callback(null, {status: "ok"});
+    });
+  });
+}
+
+//----------Util----------
+
+function loginOrFail(userName, password, callback) {
+  return new Promise(function(resolve, reject) {
+    User.login(userName, password).then(user => {
+      resolve(user);
+    }).catch(err => {
+      callback({code: 500, message: "Invalid login"});
     });
   });
 }
