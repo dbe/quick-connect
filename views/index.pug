@@ -1,37 +1,32 @@
-html
-  head
-    link(rel="stylesheet" href="/css/bootstrap.min.css")
-    link(rel="stylesheet" href="/css/main.css")
-    script(src="/js/renderer.js")
-    script(src="/js/renderManager.js")
-    script(src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous")
-  body
-    div(class="container")
-      table(class="table")
-        thead
-          tr
-            th GameId
-            th Player 0 Id
-            th Player 1 Id
-            th Is Player 0 first?
-            th Board Heights
-            th winCondition
-            th moves
-            th View game
-            th Game
-        tbody
-        each game in games
-          tr
-            td= game.gameId
-            td= game.player0Id
-            td= game.player1Id
-            td= game.isPlayer0First
-            td= game.boardHeights
-            td= game.winCondition
-            td= game.moves
-            td <a href="/preview/#{game.gameId}">Link</a>
-            td
-              .play(id="game-" + game.gameId)
+extends layout.pug
+
+block content
+  .container
+    table(class="table")
+      thead
+        tr
+          th GameId
+          th Player 0 Id
+          th Player 1 Id
+          th Is Player 0 first?
+          th Board Heights
+          th winCondition
+          th moves
+          th View game
+          th Game
+      tbody
+      each game in games
+        tr
+          td= game.gameId
+          td= game.player0Id
+          td= game.player1Id
+          td= game.isPlayer0First
+          td= game.boardHeights
+          td= game.winCondition
+          td= game.moves
+          td <a href="/preview/#{game.gameId}">Link</a>
+          td
+            .play(id="game-" + game.gameId)
 
   script.
     $(function() {
