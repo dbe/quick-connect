@@ -12,6 +12,7 @@ block content
           th Player 1
           th View game
           th Game
+          th Delete
       tbody
       each game in games
         tr(id=game.gameId)
@@ -21,6 +22,7 @@ block content
           td <a href="/preview/#{game.gameId}">Link</a>
           td
             .play(id="game-" + game.gameId)
+          td <a href="/games/delete/#{game.gameId}">Delete</a>
 
   script.
     $(function() {

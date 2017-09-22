@@ -53,6 +53,12 @@ app.get('/user/new', function (req, res) {
   res.render('register');
 });
 
+app.get('/games/delete/:gameId', function (req, res) {
+    Game.destroy({where: {gameId: req.params.gameId}}).then(() => {
+      res.redirect('/?deleteSuccess=true');
+    });
+});
+
 app.get('/user', function (req, res) {
   let query = `
   SELECT * from
@@ -60,7 +66,8 @@ app.get('/user', function (req, res) {
   (Select "Ratings"."userName", Max("Ratings"."rating") rating, Count("Ratings"."rating") games
   from "Ratings"
   group by("Ratings"."userName")) as maxrating
-  on "Users"."userName" = maxrating."userName";
+  on "Users"."userName" = maxrating."userName"
+  order by rating desc;
   `;
 
   sequelize.query(query, { type: sequelize.QueryTypes.SELECT}).then(users => {
