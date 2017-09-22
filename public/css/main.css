@@ -63,11 +63,32 @@
 .player-name.winner {
   color: green;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .player-name.loser {
-  color: red;
-  font-weight: bold;
-  font-size: 16px;
+}
+
+.player0-name::before{
+   content: '';
+   display: inline-block;
+   width: 15px;
+   height: 15px;
+   margin-right: 5px;
+   -moz-border-radius: 7.5px;
+   -webkit-border-radius: 7.5px;
+   border-radius: 7.5px;
+   background-color: red;
+}
+
+.player1-name::before{
+   content: '';
+   display: inline-block;
+   width: 15px;
+   height: 15px;
+   margin-right: 5px;
+   -moz-border-radius: 7.5px;
+   -webkit-border-radius: 7.5px;
+   border-radius: 7.5px;
+   background-color: black;
 }
