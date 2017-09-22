@@ -53,14 +53,30 @@ app.get('/user/new', function (req, res) {
 });
 
 app.get('/user', function (req, res) {
-  User.findAll().then(users => {
+  let query = `
+  SELECT * from
+  "Users" join
+  (Select "Ratings"."userName", Max("Ratings"."rating") rating, Count("Ratings"."rating") games
+  from "Ratings"
+  group by("Ratings"."userName")) as maxrating
+  on "Users"."userName" = maxrating."userName";
+  `;
+
+
+  sequelize.query(query, { type: sequelize.QueryTypes.SELECT}).then(users => {
+    console.log(users)
     let usersJson = users.map(user => {
-      let values = user.dataValues;
-      values.identiconHash = user.identiconHash();
-      return JSON.stringify(values);
+      user.identiconHash = User.identiconHash(user.userName);
+      return JSON.stringify(user);
     });
+
     res.render('user_index', {users, usersJson});
-  })
+  });
+
+  // User.findAll().then(users => {
+
+  //   res.render('user_index', {users, usersJson});
+  // })
 });
 
 app.get('/user/:userName', function (req, res) {
