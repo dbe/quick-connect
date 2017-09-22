@@ -58,8 +58,8 @@ app.get('/user', function (req, res) {
   })
 });
 
-app.get('/user/:id', function (req, res) {
-  User.findById(req.params.id).then(user => {
+app.get('/user/:userName', function (req, res) {
+  User.findByUserName(req.params.userName).then(user => {
     res.render('user_show', {user});
   })
 });

@@ -41,3 +41,10 @@ GameState: {
   isGameOver: boolean,
   isPlayer0Winner: boolean (nullable for draw)
 }
+
+
+ELO:
+gameId
+userName
+opponent
+elo
