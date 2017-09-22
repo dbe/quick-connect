@@ -2,6 +2,8 @@ extends layout.pug
 
 block content
   .container
+    if regSuccess
+      div(class="alert alert-success" role="alert") Successfully registered
     table(class="table")
       thead
         tr

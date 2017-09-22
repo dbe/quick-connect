@@ -13,9 +13,19 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     extended: true
 }));
 
+
 app.get('/', function (req, res) {
   Game.findAll({limit: 20}).then(games => {
-    res.render('index', {games, gameStates: games.map(game => JSON.stringify(game.gameState()) )});
+    var response = {
+      games,
+      gameStates: games.map(game => JSON.stringify(game.gameState()))
+    };
+
+    if(req.query.regSuccess) {
+      response.regSuccess = true;
+    }
+
+    res.render('index', response);
   });
 });
 
@@ -44,7 +54,7 @@ app.get('/user/new', function (req, res) {
 
 app.post('/user', function (req, res) {
   User.createWithPassword(req.body['username'], req.body['password']).then(user => {
-    res.render('welcome', {user});
+    res.redirect('/?regSuccess=true');
   }).catch(err => {
     //TODO: Handle other cases rather than assuming all errors are username are taken
     res.render('register', {error: "Username already taken"});

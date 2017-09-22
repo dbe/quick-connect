@@ -7,8 +7,11 @@ html
     script(src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous")
   body
     .container
-      if flash
-        div(class="alert " + flash.class role="alert")=flash.message
-
-
+      nav(class="navbar navbar-toggleable-md navbar-light bg-faded")
+        a(class="navbar-brand" href="/") Quick-Connect
+        ul(class="navbar-nav")
+          li(class="nav-item active")
+            a(class="nav-link" href="/user/new") New Bot Account
+          li(class="nav-item active")
+            a(class="nav-link" href="/command") Chaos
     block content
