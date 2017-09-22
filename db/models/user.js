@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
       limit: 1,
       order: [['createdAt', 'DESC']]
     }).then(ratings => {
-      return ratings.length > 0 ? ratings[0].rating : Rating.DEFAULT_RATING;
+      return ratings.length > 0 ? Number(ratings[0].rating) : Rating.DEFAULT_RATING;
     });
   }
 

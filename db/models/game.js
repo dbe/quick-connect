@@ -2,6 +2,9 @@
 
 var BoardState = require('../../lib/boardState.js').default;
 const uuidv4 = require('uuid/v4');
+var EloRank = require('elo-rank');
+var elo = new EloRank();
+
 
 module.exports = (sequelize, DataTypes) => {
   var Rating = sequelize.import('./Rating');
@@ -116,22 +119,65 @@ module.exports = (sequelize, DataTypes) => {
     return bs.isGameOver();
   }
 
+  function newRatingIfWon(a, b) {
+    var expected = elo.getExpected(a, b);
+    return elo.updateRating(expected, 1, a);
+  }
+
+  function newRatingIfLost(a, b) {
+    var expected = elo.getExpected(a, b);
+    return elo.updateRating(expected, 0, a);
+  }
+
   Game.prototype.makeMove = function(move) {
     this.moves.push(move);
 
     return this.update({moves: this.moves}).then(game => {
-      if(game.isGameOver()) {
+      let gameOver = game.isGameOver();
+      if(gameOver) {
         User.ratingByUserName(game.player0).then(player0Rating => {
           User.ratingByUserName(game.player1).then(player1Rating => {
+            let newPlayer0Rating;
+            let newPlayer1Rating;
+
+            //TODO: Handle actually calcing elo for draws
+            if(gameOver.winner === null) {
+              return;
+            } else if(gameOver.winner === 0) {
+              newPlayer0Rating = newRatingIfWon(player0Rating, player1Rating);
+              newPlayer1Rating = newRatingIfLost(player1Rating, player0Rating);
+            } else {
+              newPlayer0Rating = newRatingIfLost(player0Rating, player1Rating);
+              newPlayer1Rating = newRatingIfWon(player1Rating, player0Rating);
+            }
+
             console.log(`player0Rating: ${player0Rating}`);
+            console.log(`typeof(player0Rating): ${typeof(player0Rating)}`);
             console.log(`player1Rating: ${player1Rating}`);
-            
+            console.log(`typeof(player1Rating): ${typeof(player1Rating)}`);
+
+            console.log(`newPlayer0Rating: ${newPlayer0Rating}`);
+            console.log(`newPlayer1Rating: ${newPlayer1Rating}`);
+
+            console.log(`elo.newRatingIfWon(player0Rating, player1Rating): ${newRatingIfWon(player0Rating, player1Rating)}`);
+            console.log(`elo.newRatingIfLost(player0Rating, player1Rating): ${newRatingIfLost(player0Rating, player1Rating)}`);
+
+            console.log(`elo.newRatingIfWon(player1Rating, player0Rating): ${newRatingIfWon(player1Rating, player0Rating)}`);
+            console.log(`elo.newRatingIfLost(player1Rating, player0Rating): ${newRatingIfLost(player1Rating, player0Rating)}`);
+
             return Rating.create({
               gameId: game.gameId,
               userName: game.player0,
               opponent: game.player1,
-              rating: 1515
-            });
+              rating: newPlayer0Rating
+            }).then(() => {
+              return Rating.create({
+                gameId: game.gameId,
+                userName: game.player1,
+                opponent: game.player0,
+                rating: newPlayer1Rating
+              });
+            })
           });
         })
       }
