@@ -151,20 +151,6 @@ module.exports = (sequelize, DataTypes) => {
               newPlayer1Rating = newRatingIfWon(player1Rating, player0Rating);
             }
 
-            console.log(`player0Rating: ${player0Rating}`);
-            console.log(`typeof(player0Rating): ${typeof(player0Rating)}`);
-            console.log(`player1Rating: ${player1Rating}`);
-            console.log(`typeof(player1Rating): ${typeof(player1Rating)}`);
-
-            console.log(`newPlayer0Rating: ${newPlayer0Rating}`);
-            console.log(`newPlayer1Rating: ${newPlayer1Rating}`);
-
-            console.log(`elo.newRatingIfWon(player0Rating, player1Rating): ${newRatingIfWon(player0Rating, player1Rating)}`);
-            console.log(`elo.newRatingIfLost(player0Rating, player1Rating): ${newRatingIfLost(player0Rating, player1Rating)}`);
-
-            console.log(`elo.newRatingIfWon(player1Rating, player0Rating): ${newRatingIfWon(player1Rating, player0Rating)}`);
-            console.log(`elo.newRatingIfLost(player1Rating, player0Rating): ${newRatingIfLost(player1Rating, player0Rating)}`);
-
             return Rating.create({
               gameId: game.gameId,
               userName: game.player0,
