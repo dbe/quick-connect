@@ -4,6 +4,9 @@ var BoardState = require('../../lib/boardState.js').default;
 const uuidv4 = require('uuid/v4');
 
 module.exports = (sequelize, DataTypes) => {
+  var Rating = sequelize.import('./Rating');
+  var User = sequelize.import('./User');
+
   var Game = sequelize.define('Game', {
     gameId: DataTypes.UUID,
     player0: DataTypes.STRING,
@@ -115,6 +118,24 @@ module.exports = (sequelize, DataTypes) => {
 
   Game.prototype.makeMove = function(move) {
     this.moves.push(move);
+
+    return this.update({moves: this.moves}).then(game => {
+      if(game.isGameOver()) {
+        User.ratingByUserName(game.player0).then(player0Rating => {
+          User.ratingByUserName(game.player1).then(player1Rating => {
+            console.log(`player0Rating: ${player0Rating}`);
+            console.log(`player1Rating: ${player1Rating}`);
+            
+            return Rating.create({
+              gameId: game.gameId,
+              userName: game.player0,
+              opponent: game.player1,
+              rating: 1515
+            });
+          });
+        })
+      }
+    });
   }
 
   Game.prototype.isMoveLegal = function(move) {

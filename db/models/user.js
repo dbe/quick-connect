@@ -3,7 +3,7 @@ var forge = require('node-forge');
 var Promise = require("bluebird");
 
 module.exports = (sequelize, DataTypes) => {
-  var Rating = sequelize.models.Rating;
+  var Rating = sequelize.import('./Rating');
   const KEY = 'the best way to protect the humans is to destroy them';
   var User = sequelize.define('User', {
     userName: DataTypes.STRING,
@@ -37,18 +37,22 @@ module.exports = (sequelize, DataTypes) => {
     return User.find({ where: {userName}});
   }
 
-  User.prototype.validPassword = (password) => {
+  User.ratingByUserName = function(userName) {
+    return Rating.findAll({
+      where: {userName: userName},
+      limit: 1,
+      order: [['createdAt', 'DESC']]
+    }).then(ratings => {
+      return ratings.length > 0 ? ratings[0].rating : Rating.DEFAULT_RATING;
+    });
+  }
+
+  User.prototype.validPassword = function(password) {
     return this.passwordHash === User.hashPassword(password);
   }
 
   User.prototype.rating = function() {
-    return Rating.findAll({
-      where: {userName: this.userName},
-      limit: 1,
-      order: [['createdAt', 'DESC']]
-    }).then(ratings => {
-      return ratings.length > 0 ? ratings[0] : Rating.DEFAULT_RATING;
-    });
+    return User.ratingByUserName(this.userName);
   }
 
   return User;

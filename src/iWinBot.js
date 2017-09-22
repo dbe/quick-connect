@@ -42,7 +42,7 @@ function pollUntilMyTurn(gameId, resolve) {
       resolve(gameState);
     } else {
       console.log("Still not my turn");
-      setTimeout(pollUntilMyTurn, 1000, gameId, resolve);
+      setTimeout(pollUntilMyTurn, 200, gameId, resolve);
     }
   });
 }
@@ -61,6 +61,7 @@ function getGameState(gameId) {
 
 function joinGame(userName, password) {
   return request('joinGame', {userName, password}).then(resp => {
+    console.log(resp);
     return resp.result.gameId;
   });
 }

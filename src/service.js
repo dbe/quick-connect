@@ -59,8 +59,7 @@ function makeMove(args, callback) {
         return callback({code: 500, message: "Illegal Move"});
       }
 
-      game.makeMove(move);
-      game.update({moves: game.moves}).then(game => {
+      game.makeMove(move).then(() => {
         return callback(null, {status: "ok"});
       });
     });
