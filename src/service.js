@@ -1,11 +1,11 @@
 import { sequelize, Game, User } from '../db/models';
 
 const uuidv4 = require('uuid/v4');
+const Promise = require("bluebird");
 const service = {
   echo,
   getOpenGames,
   joinGame,
-  createGame,
   getGameState,
   makeMove
 }
@@ -23,41 +23,25 @@ function getOpenGames(args, callback) {
   });
 }
 
+function loginOrFail(userName, password, callback) {
+  return new Promise(function(resolve, reject) {
+    User.login(userName, password).then(user => {
+      resolve(user);
+    }).catch(err => {
+      callback({code: 500, message: "Invalid login"});
+    });
+  });
+}
+
 //Expects: args: {gameId: uuid, userName: string, password: string}
 //Returns: {playerId: uuid} if successfully joined
 //Throws: CannotJoin
 //TODO: Clean this up, add transactions to avoid race conditions
 function joinGame(args, callback) {
-  User.login(args.userName, args.password,
-    (user) => {
-      Game.find({where: {gameId: args.gameId}}).then(game => {
-        if(game.player1Id !== null) {
-          callback({code: 500, message: "Game was already full."});
-        } else {
-          game.update({player1Id: user.userId}).then((updatedGame) => {
-            callback(null, {playerId: updatedGame.player1Id});
-          });
-        }
-      });
-    },
-    () => {
-      callback({code: 500, message: "Invalid login"});
-    })
-}
-
-//Expects no args
-//Returns: {gameId: uuid, playerId: uuid}
-function createGame(args, callback) {
-  Game.create({
-    gameId: uuidv4(),
-    player0Id: uuidv4(),
-    player1Id: null,
-    isPlayer0First: true,
-    boardHeights: [8,8,8,8,8,8,8],
-    winCondition: [4],
-    moves: []
-  }).then(game =>  {
-    callback(null, {gameId: game.gameId, playerId: game.player0Id});
+  loginOrFail(args.userName, args.password, callback).then(user => {
+    Game.joinEmptyOrCreate(user).then(game => {
+      callback(null, {gameId: game.gameId});
+    });
   });
 }
 

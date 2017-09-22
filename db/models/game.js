@@ -1,6 +1,7 @@
 'use strict';
 
 var BoardState = require('../../lib/boardState.js').default;
+const uuidv4 = require('uuid/v4');
 
 module.exports = (sequelize, DataTypes) => {
   var Game = sequelize.define('Game', {
@@ -33,6 +34,36 @@ module.exports = (sequelize, DataTypes) => {
         }
       ]
     }});
+  }
+
+  Game.joinEmptyOrCreate = function(user) {
+    return Game.findAllEmpty().then(games => {
+      if(games.length > 0) {
+        return games[0].addUserToGame(user);
+      } else {
+        return Game.createGameWithUser(user);
+      }
+    });
+  }
+
+  Game.findAllEmpty = function() {
+    return Game.findAll({where: {player1Id: null}});
+  }
+
+  Game.createGameWithUser = function(user) {
+    return Game.create({
+      gameId: uuidv4(),
+      player0Id: user.userId,
+      player1Id: null,
+      isPlayer0First: true,
+      boardHeights: [8,8,8,8,8,8,8],
+      winCondition: [4],
+      moves: []
+    });
+  }
+
+  Game.prototype.addUserToGame = function(user) {
+    return this.update({player1Id: user.userId});
   }
 
   //Given moves by a player, make sure that they match up, and extract which "move" they want to make

@@ -1,6 +1,7 @@
 'use strict';
 var forge = require('node-forge');
 var uuidv4 = require('uuid/v4');
+var Promise = require("bluebird");
 
 module.exports = (sequelize, DataTypes) => {
   const KEY = 'the best way to protect the humans is to destroy them';
@@ -22,18 +23,20 @@ module.exports = (sequelize, DataTypes) => {
     return forge.md.sha256.create().update(password).digest().toHex();
   }
 
-  User.login = (userName, password, successCallback, failureCallback) => {
-    User.findByUserName(userName).then(user => {
-      if (user && user.validPassword(user, password)) {
-        successCallback(user);
-      } else {
-        failureCallback();
-      }
+  User.login = (userName, password) => {
+    return new Promise(function(resolve, reject) {
+      User.findByUserName(userName).then(user => {
+        if (user && user.validPassword(user, password)) {
+          resolve(user);
+        } else {
+          reject();
+        }
+      })
     })
   }
 
   User.findByUserName = (userName) => {
-    return User.find({ where: { userName } });
+    return User.find({ where: {userName}});
   }
 
   User.prototype.validPassword = (user, password) => {
