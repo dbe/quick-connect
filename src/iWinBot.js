@@ -15,8 +15,8 @@ var request = Promise.promisify(client.request, {context: client});
 console.log("Connected to server on port: ", PORT);
 
 joinGame(userName, password).then(gameId => {
-  console.log(gameId)
-  // play(gameId);
+  console.log("Joined game: ", gameId);
+  play(gameId);
 })
 
 function play(gameId) {
@@ -28,8 +28,6 @@ function play(gameId) {
     // }
   });
 }
-
-
 
 function waitForMyTurn(gameId) {
   return new Promise((resolve) => {
@@ -65,11 +63,11 @@ function joinGame(userName, password) {
 
 //Pure Game Logic Code
 function isMyTurn(gameState) {
-  return amIplayer0 === gameState.isPlayer0Turn;
+  return amIplayer0(gameState) === isPlayer0Turn(gameState);
 }
 
 function amIplayer0(gameState) {
-  return gameState.player0UserName === userName;
+  return gameState.player0 === userName;
 }
 
 function isPlayer0Turn(gameState) {

@@ -18,7 +18,7 @@ function echo(args, callback) {
 //Expects no args
 //Returns: [Game] where player1Id is null
 function getOpenGames(args, callback) {
-  Game.findAll({where: {player1Id: null}}).then(games => {
+  Game.findAll({where: {player1: null}}).then(games => {
     callback(null, games.map(game => game.gameState()));
   });
 }
@@ -44,32 +44,34 @@ function getGameState(args, callback) {
 //Expects: {gameId: uuid, playerId: uuid, moves: List<int>}
 //Returns: {status: string}
 function makeMove(args, callback) {
-  Game.findByGameAndUserName(args.gameId, args.userName).then(game => {
-    if(game === null) {
-      return callback({code: 500, message: "Could not find game"});
-    }
+  loginOrFail(args.userName, args.password, callback).then(user => {
+    Game.findByGameAndUserName(args.gameId, user.userName).then(game => {
+      if(game === null) {
+        return callback({code: 500, message: "Could not find game"});
+      }
 
-    if(!game.isStarted()) {
-      return callback({code: 500, message: "Game has not started yet. Please wait for another player to join"});
-    }
+      if(!game.isStarted()) {
+        return callback({code: 500, message: "Game has not started yet. Please wait for another player to join"});
+      }
 
-    let gameOver = game.isGameOver();
-    if(gameOver) {
-      return callback({code: 500, message: `Cannot make move. Game is over: ${gameOver.message}`});
-    }
+      let gameOver = game.isGameOver();
+      if(gameOver) {
+        return callback({code: 500, message: `Cannot make move. Game is over: ${gameOver.message}`});
+      }
 
-    if(!game.isUserTurnByUserName(args.userName)) {
-      return callback({code: 500, message: "It is not your turn."});
-    }
+      if(!game.isUserTurnByUserName(user.userName)) {
+        return callback({code: 500, message: "It is not your turn."});
+      }
 
-    let move = game.extractIntendedMove(args.moves);
-    if(game.isMoveLegal(move) === false) {
-      return callback({code: 500, message: "Illegal Move"});
-    }
+      let move = game.extractIntendedMove(args.moves);
+      if(game.isMoveLegal(move) === false) {
+        return callback({code: 500, message: "Illegal Move"});
+      }
 
-    game.makeMove(move);
-    game.update({moves: game.moves}).then(game => {
-      return callback(null, {status: "ok"});
+      game.makeMove(move);
+      game.update({moves: game.moves}).then(game => {
+        return callback(null, {status: "ok"});
+      });
     });
   });
 }
