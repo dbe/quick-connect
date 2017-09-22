@@ -38,12 +38,21 @@ module.exports = (sequelize, DataTypes) => {
 
   Game.joinEmptyOrCreate = function(user) {
     return Game.findAllEmpty().then(games => {
-      if(games.length > 0) {
-        return games[0].addUserToGame(user);
+      let eligibleGames = eligibleGamesForUser(games, user);
+
+      if(eligibleGames.length > 0) {
+        return eligibleGames[0].addUserToGame(user);
       } else {
         return Game.createGameWithUser(user);
       }
     });
+  }
+
+  //Filters out games that player is already a part of
+  function eligibleGamesForUser(games, user) {
+    return games.filter(game => {
+      return game.player0Id !== user.userId && game.player0Id != user.userId;
+    })
   }
 
   Game.findAllEmpty = function() {

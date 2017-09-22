@@ -38,6 +38,8 @@ function waitForMyTurn(gameId) {
 
 function pollUntilMyTurn(gameId, resolve) {
   getGameState(gameId).then(gameState => {
+    console.log(`gameState.isStarted: ${gameState.isStarted}`);
+    console.log(`isMyTurn(gameState): ${isMyTurn(gameState)}`);
     if(gameState.isStarted && isMyTurn(gameState)) {
       resolve(gameState);
     } else {
