@@ -43,7 +43,7 @@ function pollUntilMyTurn(gameId, resolve) {
     } else {
       console.log("Still not my turn");
       if(!gameState.isGameOver) {
-        setTimeout(pollUntilMyTurn, 200, gameId, resolve);
+        setTimeout(pollUntilMyTurn, 1000, gameId, resolve);
       }
     }
   });

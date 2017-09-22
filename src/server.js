@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 
 app.get('/', function (req, res) {
-  Game.findAll({limit: 20, order: [['updatedAt', 'DESC']]}).then(games => {
+  Game.findAll({limit: 100, order: [['updatedAt', 'DESC']]}).then(games => {
     console.log(games);
     var response = {
       games,
