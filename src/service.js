@@ -4,7 +4,6 @@ const Promise = require("bluebird");
 
 const service = {
   echo,
-  getOpenGames,
   joinGame,
   getGameState,
   makeMove
@@ -13,14 +12,6 @@ const service = {
 //Expects args: {message: string}
 function echo(args, callback) {
   callback(null, args.message);
-}
-
-//Expects no args
-//Returns: [Game] where player1Id is null
-function getOpenGames(args, callback) {
-  Game.findAll({where: {player1: null}}).then(games => {
-    callback(null, games.map(game => game.gameState()));
-  });
 }
 
 //TODO: Clean this up, add transactions to avoid race conditions

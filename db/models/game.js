@@ -136,13 +136,23 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Game.prototype.gameState = function() {
+    let gameOverStats = this.isGameOver();
+    let gameOver = false;
+    let isPlayer0Winner = null;
+
+    if(!gameOverStats === false) {
+      gameOver = true;
+      isPlayer0Winner = gameOverStats.winner === 0;
+    }
+
     return {
       gameId: this.gameId,
       isPlayer0First: this.isPlayer0First,
       player0: this.player0,
       player1: this.player1,
       isStarted: this.isStarted(),
-      isGameOver: this.isGameOver(),
+      isGameOver: gameOver,
+      isPlayer0Winner: isPlayer0Winner,
       boardHeights: this.boardHeights,
       winCondition: this.winCondition,
       moves: this.moves

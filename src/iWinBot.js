@@ -21,6 +21,7 @@ joinGame(userName, password).then(gameId => {
 
 function play(gameId) {
   waitForMyTurn(gameId).then(gameState => {
+    console.log(gameState);
     console.log(`gameState.isGameOver: ${gameState.isGameOver}`);
     if(!gameState.isGameOver) {
       makeMove(gameId, decideMove(gameState)).then(() => {
@@ -28,16 +29,6 @@ function play(gameId) {
       });
     }
   });
-}
-
-function makeMove(gameId, moves) {
-  return request('makeMove', {gameId, userName, password, moves}).then(resp => {
-    return resp.result;
-  });
-}
-
-function decideMove(gameState) {
-  return gameState.moves.concat(0);
 }
 
 function waitForMyTurn(gameId) {
@@ -57,6 +48,12 @@ function pollUntilMyTurn(gameId, resolve) {
   });
 }
 
+function makeMove(gameId, moves) {
+  return request('makeMove', {gameId, userName, password, moves}).then(resp => {
+    return resp.result;
+  });
+}
+
 function getGameState(gameId) {
   return request('getGameState', {gameId}).then(resp => {
     return resp.result;
@@ -68,8 +65,6 @@ function joinGame(userName, password) {
     return resp.result.gameId;
   });
 }
-
-
 
 //Pure Game Logic Code
 function isMyTurn(gameState) {
@@ -84,14 +79,6 @@ function isPlayer0Turn(gameState) {
   return gameState.moves.length % 2 === 0;
 }
 
-
-// function logGenericResult(procedureName, args, client) {
-//   client.request(procedureName, args, function(err, response) {
-//     if(err) throw err;
-//     if(response.error) console.log(response.error.message);
-//
-//     console.log(`${procedureName}:`);
-//     console.log(response.result);
-//     console.log();
-//   });
-// }
+function decideMove(gameState) {
+  return gameState.moves.concat(0);
+}
