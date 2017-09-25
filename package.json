@@ -25,10 +25,11 @@
   "scripts": {
     "build": "./node_modules/.bin/babel --presets es2015 src --out-dir lib --ignore test.js",
     "watch": "yarn build -- --watch",
-    "start": "yarn build && node lib/server.js",
-    "start-client": "yarn build && node lib/client.js",
+    "start": "node lib/server.js",
+    "start-client": "node lib/client.js",
     "test": "ava lib/test",
     "nuke": "yarn run sequelize db:drop; yarn run sequelize db:create; yarn run sequelize db:migrate; yarn run sequelize db:seed:all",
+    "heroku-prebuild": "NPM_CONFIG_PRODUCTION=false",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=true yarn install"
   }
 }
