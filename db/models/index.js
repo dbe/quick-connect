@@ -5,12 +5,14 @@ var path      = require('path');
 var Sequelize = require('sequelize');
 var basename  = path.basename(module.filename);
 var env       = process.env.NODE_ENV || 'development';
-var config    = require(__dirname + '/../database.json')[env];
 var db        = {};
 
-if (config.use_env_variable) {
-  var sequelize = new Sequelize(process.env[config.use_env_variable]);
+if (env === 'production') {
+  console.log("In production");
+  var sequelize = new Sequelize(process.env['DATABASE_URL']);
 } else {
+  console.log("Not in production")
+  var config    = require(__dirname + '/../database.json')[env];
   var sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
