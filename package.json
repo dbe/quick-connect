@@ -2,6 +2,8 @@
   "name": "quick-connect",
   "version": "1.0.0",
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
     "bluebird": "^3.5.0",
     "body-parser": "^1.18.1",
     "crypto-js": "^3.1.9-1",
@@ -18,9 +20,7 @@
     "uuid": "^3.1.0"
   },
   "devDependencies": {
-    "ava": "^0.22.0",
-    "babel-cli": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1"
+    "ava": "^0.22.0"
   },
   "scripts": {
     "build": "./node_modules/.bin/babel --presets es2015 src --out-dir lib --ignore test.js",
@@ -28,8 +28,6 @@
     "start": "node lib/server.js",
     "start-client": "node lib/client.js",
     "test": "ava lib/test",
-    "nuke": "yarn run sequelize db:drop; yarn run sequelize db:create; yarn run sequelize db:migrate; yarn run sequelize db:seed:all",
-    "heroku-prebuild": "NPM_CONFIG_PRODUCTION=false",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=true yarn install"
+    "nuke": "yarn run sequelize db:drop; yarn run sequelize db:create; yarn run sequelize db:migrate; yarn run sequelize db:seed:all"
   }
 }
