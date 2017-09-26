@@ -1,5 +1,5 @@
-var express = require('express')
-var bodyParser = require('body-parser')
+var express = require('express');
+var bodyParser = require('body-parser');
 
 import { sequelize, Game, User } from '../db/models';
 
@@ -10,7 +10,6 @@ app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     extended: true
 }));
-
 
 app.get('/', function (req, res) {
   Game.findAll({limit: 200, order: [['updatedAt', 'DESC']]}).then(games => {
@@ -94,6 +93,24 @@ app.post('/user', function (req, res) {
     res.render('register', {error: "Username already taken"});
   });
 });
+
+
+//**********JSONRPC Server Proxy**********
+
+import service from './service';
+var jayson = require('jayson');
+const server = require('jayson').server(service);
+const client = jayson.client.http('http://localhost:3001');
+
+server.http().listen(3001);
+
+app.post('/rpc', function(req, res) {
+  client.request(req.body, function(err, resp) {
+    res.send(resp);
+  });
+});
+
+//**********END JSONRPC Server Proxy**********
 
 let port = process.env.PORT || 3002;
 app.listen(port);

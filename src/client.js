@@ -1,13 +1,11 @@
 var jayson = require('jayson');
-var PORT = 3001;
 
-
-var client = jayson.client.http({port: PORT});
-console.log("Connected to server on port: ", PORT);
+let url = 'http://localhost:3002/rpc'
+var client = jayson.client.http(url);
 
 //Run-thru all of the commands
-// logGenericResult('echo', {message: 'oreo'}, client);
-logGenericResult('getOpenGames', null, client);
+logGenericResult('echo', {message: 'oreo'}, client);
+// logGenericResult('getOpenGames', null, client);
 // logGenericResult('joinGame', {userName: 'test', password: 'test', gameId: 'ab45e27a-df6b-457c-88fd-51b14751c954'}, client);
 // logGenericResult('createGame', null, client);
 // logGenericResult('getGameState', {gameId: 'df32fdf8-b198-43cd-bb46-86a777fe676d'}, client);
