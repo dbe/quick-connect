@@ -1,9 +1,7 @@
-var jayson = require('jayson');
 var express = require('express')
 var bodyParser = require('body-parser')
 
 import { sequelize, Game, User } from '../db/models';
-import service from './service';
 
 var app = express();
 app.set('view engine', 'pug');
@@ -97,9 +95,6 @@ app.post('/user', function (req, res) {
   });
 });
 
-app.listen(3002);
-console.log("Web server listening on port 3002");
-
-const server = jayson.server(service);
-server.http().listen(3001);
-console.log("JSONRPC server listening on port 3001");
+let port = process.env.PORT || 3002;
+app.listen(port);
+console.log(`Web server listening on port ${port}`);
