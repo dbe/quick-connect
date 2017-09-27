@@ -22,6 +22,9 @@
 ## Express server
 Running the server will also create an http server on port 3002. The index of this server will show games in html form.
 
+## JsonRpc service
+The express server acts as a proxy for the JsonRpc server. In order to access the JsonRpc server, point your client at localhost:3002/rpc
+
 ### Game data api
 The express server also serves game data in json at the endpoint /api/v1/games
 
