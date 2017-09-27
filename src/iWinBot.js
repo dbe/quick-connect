@@ -10,7 +10,8 @@ if(!userName || !password) {
 var jayson = require('jayson');
 var Promise = require("bluebird");
 
-var client = jayson.client.http('http://localhost:3002/rpc');
+var client = jayson.client.http('http://quick-connect.herokuapp.com/rpc');
+// var client = jayson.client.http('http://localhost:3002/rpc');
 var request = Promise.promisify(client.request, {context: client});
 
 joinGame(userName, password).then(gameId => {
@@ -20,7 +21,6 @@ joinGame(userName, password).then(gameId => {
 
 function play(gameId) {
   waitForMyTurn(gameId).then(gameState => {
-    console.log(`gameState.isGameOver: ${gameState.isGameOver}`);
     if(!gameState.isGameOver) {
       makeMove(gameId, decideMove(gameState)).then(() => {
         play(gameId);
@@ -40,7 +40,7 @@ function pollUntilMyTurn(gameId, resolve) {
     if(gameState.isStarted && isMyTurn(gameState)) {
       resolve(gameState);
     } else {
-      console.log("Still not my turn");
+      process.stdout.write('*');
       if(!gameState.isGameOver) {
         setTimeout(pollUntilMyTurn, 1000, gameId, resolve);
       }
@@ -49,6 +49,7 @@ function pollUntilMyTurn(gameId, resolve) {
 }
 
 function makeMove(gameId, moves) {
+  console.log("\nMaking Move");
   return request('makeMove', {gameId, userName, password, moves}).then(resp => {
     return resp.result;
   });
@@ -62,7 +63,6 @@ function getGameState(gameId) {
 
 function joinGame(userName, password) {
   return request('joinGame', {userName, password}).then(resp => {
-    console.log(resp);
     return resp.result.gameId;
   });
 }

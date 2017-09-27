@@ -64,6 +64,7 @@ app.get('/user', function (req, res) {
   (
     SELECT u."userName", r.rating, r."createdAt" from "Users" u left join "Ratings" r
     on u."userName" = r."userName"
+    order by r."createdAt" desc
   ) as uxr
 
   left join
