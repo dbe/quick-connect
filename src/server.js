@@ -58,13 +58,23 @@ app.get('/games/delete/:gameId', function (req, res) {
 
 app.get('/user', function (req, res) {
   let query = `
-  SELECT * from
-  "Users" join
-  (Select "Ratings"."userName", Max("Ratings"."rating") rating, Count("Ratings"."rating") games
-  from "Ratings"
-  group by("Ratings"."userName")) as maxrating
-  on "Users"."userName" = maxrating."userName"
-  order by rating desc;
+  SELECT DISTINCT ON (uxr."userName")
+  uxr."userName", uxr."rating", gc.games from
+
+  (
+    SELECT u."userName", r.rating, r."createdAt" from "Users" u left join "Ratings" r
+    on u."userName" = r."userName"
+  ) as uxr
+
+  left join
+  (
+    Select r."userName", Count(r."rating") games
+    from "Ratings" r
+    group by(r."userName")
+  ) as gc
+
+  on uxr."userName" = gc."userName"
+  ;
   `;
 
   sequelize.query(query, { type: sequelize.QueryTypes.SELECT}).then(users => {

@@ -9,10 +9,9 @@ if(!userName || !password) {
 
 var jayson = require('jayson');
 var Promise = require("bluebird");
-var PORT = 3001;
-var client = jayson.client.http({port: PORT});
+
+var client = jayson.client.http('http://localhost:3002/rpc');
 var request = Promise.promisify(client.request, {context: client});
-console.log("Connected to server on port: ", PORT);
 
 joinGame(userName, password).then(gameId => {
   console.log("Joined game: ", gameId);
