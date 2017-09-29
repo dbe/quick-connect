@@ -79,3 +79,54 @@ test('isPlayerToken', t => {
   t.false(bs.isPlayerToken(1, 3));
   t.false(bs.isPlayerToken(1, -1));
 });
+
+test('full board is game over', t => {
+  let game = Game.build({
+    moves: [0, 0, 1, 1, 2, 2],
+    boardHeights: [2, 2, 2],
+    winCondition: [4],
+    isPlayer0First: true
+  });
+
+  let bs = new BoardState(game);
+  let gameOver = bs.isGameOver();
+
+  t.is(gameOver.winner, null);
+});
+
+test('detects game over', t => {
+  let game = Game.build({
+    moves: [
+      0, 1, 0, 1, 0, 1, 0
+    ],
+    boardHeights: [
+      5, 5, 5, 5, 5
+    ],
+    winCondition: [4],
+    isPlayer0First: true
+  });
+
+  let bs = new BoardState(game);
+  let gameOver = bs.isGameOver();
+
+	t.true(gameOver !== false);
+	t.is(gameOver.winner, 0);
+});
+
+test('detects when game is not over', t => {
+  let game = Game.build({
+    moves: [
+      0, 1, 0, 1, 0, 1, 3, 4, 3, 4, 3, 4
+    ],
+    boardHeights: [
+      5, 5, 5, 5, 5
+    ],
+    winCondition: [4],
+    isPlayer0First: true
+  });
+
+  let bs = new BoardState(game);
+  let gameOver = bs.isGameOver();
+
+	t.false(gameOver);
+});

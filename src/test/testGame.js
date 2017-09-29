@@ -57,19 +57,3 @@ test('detects legal move', t => {
 
   t.true(game.isMoveLegal(2))
 });
-
-
-test('detects game over', t => {
-  let game = Game.build({
-    moves: [
-      0, 1, 0, 1, 0, 1, 0
-    ],
-    boardHeights: [
-      5, 5, 5, 5, 5
-    ],
-    winCondition: [4]
-  });
-
-
-	t.true(game.isGameOver() !== false);
-});

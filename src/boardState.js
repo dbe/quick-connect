@@ -51,6 +51,7 @@ export default class BoardState {
     for(let col = 0; col < this.game.boardHeights.length; col++) {
       for(let row = 0; row < this.game.boardHeights[col]; row++) {
         let player = this.state[col][row];
+        if(player === undefined) continue;
 
         for(let dirIndex = 0; dirIndex < DIRECTIONS.length; dirIndex++) {
           let dir = DIRECTIONS[dirIndex];
@@ -66,11 +67,8 @@ export default class BoardState {
           }
 
           if(win) {
-            let message = `Player ${player} wins. Starting at: [${col},${row}] going in direction: ${dir}`;
-            console.log(message);
-
             return {
-              message,
+              message: `Player ${player} wins. Starting at: [${col},${row}] going in direction: ${dir}`,
               winner: player,
               col: col,
               row: row,
@@ -81,6 +79,18 @@ export default class BoardState {
       }
     }
 
+    //Draw
+    if(this.isBoardFull()) {
+      return {
+        message: "Draw",
+        winner: null
+      }
+    }
+
     return false;
+  }
+
+  isBoardFull() {
+    return this.game.moves.length === this.game.boardHeights.reduce((sum, height) => sum + height, 0);
   }
 }
