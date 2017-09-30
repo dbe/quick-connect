@@ -15,6 +15,8 @@ function echo(args, callback) {
 }
 
 //TODO: Clean this up, add transactions to avoid race conditions
+//Expects: {userName: string, password: string}
+//Returns: {gameId: string}
 function joinGame(args, callback) {
   loginOrFail(args.userName, args.password, callback).then(user => {
     Game.joinEmptyOrCreate(user).then(game => {
@@ -32,6 +34,8 @@ function getGameState(args, callback) {
   });
 }
 
+//Expects: {userName: string, password: string, gameId: string, moves: [int]}
+//Returns: {status: int} (200 is 'ok', 500 is 'error')
 function makeMove(args, callback) {
   loginOrFail(args.userName, args.password, callback).then(user => {
     Game.findByGameAndUserName(args.gameId, user.userName).then(game => {
@@ -58,7 +62,7 @@ function makeMove(args, callback) {
       }
 
       game.makeMove(move).then(() => {
-        return callback(null, {status: "ok"});
+        return callback(null, {code: 200});
       });
     });
   });
