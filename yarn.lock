@@ -3097,8 +3097,8 @@ qs@~6.4.0:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
 
 quick-connect-js-bot@^1.0.7:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/quick-connect-js-bot/-/quick-connect-js-bot-1.0.8.tgz#ed85dbe0c8197f0467f3850af700ba5a385eee62"
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/quick-connect-js-bot/-/quick-connect-js-bot-1.0.9.tgz#52856bbeb04cd111f1da2868c874b26d00bde24f"
   dependencies:
     babel-preset-es2015 "^6.24.1"
     babel-register "^6.26.0"
