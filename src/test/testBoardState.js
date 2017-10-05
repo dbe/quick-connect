@@ -6,7 +6,8 @@ test('builds board state correctly', t => {
   let game = Game.build({
     moves: [1, 1, 2],
     boardHeights: [2, 2, 2],
-    isPlayer0First: true
+    isPlayer0First: true,
+    winCondition: [4]
   });
 
   let bs = new BoardState(game);
@@ -23,7 +24,8 @@ test('containsToken works', t => {
   let game = Game.build({
     moves: [1, 1, 2],
     boardHeights: [2, 2, 2],
-    isPlayer0First: true
+    isPlayer0First: true,
+    winCondition: [4]
   });
 
   let bs = new BoardState(game);
@@ -51,7 +53,8 @@ test('isPlayerToken', t => {
   let game = Game.build({
     moves: [1, 1, 2],
     boardHeights: [2, 2, 2],
-    isPlayer0First: true
+    isPlayer0First: true,
+    winCondition: [4]
   });
 
   let bs = new BoardState(game);
@@ -89,9 +92,9 @@ test('full board is game over', t => {
   });
 
   let bs = new BoardState(game);
-  let gameOver = bs.isGameOver();
 
-  t.is(gameOver.winner, null);
+  t.is(bs.isGameOver, true);
+  t.is(bs.isPlayer0Winner, null);
 });
 
 test('detects game over', t => {
@@ -107,10 +110,9 @@ test('detects game over', t => {
   });
 
   let bs = new BoardState(game);
-  let gameOver = bs.isGameOver();
 
-	t.true(gameOver !== false);
-	t.is(gameOver.winner, 0);
+	t.true(bs.isGameOver);
+	t.true(bs.isPlayer0Winner);
 });
 
 test('detects when game is not over', t => {
@@ -126,7 +128,7 @@ test('detects when game is not over', t => {
   });
 
   let bs = new BoardState(game);
-  let gameOver = bs.isGameOver();
 
-	t.false(gameOver);
+	t.false(bs.isGameOver);
+	t.is(bs.isPlayer0Winner, null);
 });

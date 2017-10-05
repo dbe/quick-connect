@@ -11,8 +11,8 @@ const DIRECTIONS = [
 
 export default class BoardState {
   constructor(game) {
-    setBoardState(game.boardHeights, game.isPlayer0First, game.moves);
-    setGameOver(game.boardHeights, game.moves, game.winCondition);
+    this.setBoardState(game.boardHeights, game.isPlayer0First, game.moves);
+    this.setGameOver(game.boardHeights, game.moves, game.winCondition);
   }
 
   setBoardState(boardHeights, isPlayer0First, moves) {

@@ -51,9 +51,8 @@ function makeMove(args, callback) {
         return callback({code: 500, message: "Game has not started yet. Please wait for another player to join"});
       }
 
-      let gameOver = game.isGameOver();
-      if(gameOver) {
-        return callback({code: 500, message: `Cannot make move. Game is over: ${gameOver.message}`});
+      if(game.isGameOver) {
+        return callback({code: 500, message: `Cannot make move. Game is over`});
       }
 
       if(!game.isUserTurnByUserName(user.userName)) {

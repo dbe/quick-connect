@@ -8,7 +8,7 @@ test('returns isPlayer0Turn correctly when player0 is first', t => {
   });
 
   t.false(game.isPlayer0Turn());
-  game.makeMove(1);
+  game.moves.push(1);
   t.true(game.isPlayer0Turn());
 });
 
