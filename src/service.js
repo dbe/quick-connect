@@ -66,7 +66,12 @@ function makeMove(args, callback) {
       }
 
       game.makeMove(move).then((game) => {
-        console.log(`In callback of makeMove. game: ${game}`);
+        if(game.isGameOver()) {
+          clearTurnTimeout(game);
+        } else {
+          setTurnTimeout(game);
+        }
+
         return callback(null, {code: 200});
       });
     });
@@ -76,23 +81,28 @@ function makeMove(args, callback) {
 //----------Util----------
 
 // const TURN_TIMEOUT = 10 * 60 * 1000; //10 minutes
-const TURN_TIMEOUT = 2000 //2 seconds
+const TURN_TIMEOUT = 12000 //12 seconds
 let gameTimeouts = {};
 
 function setTurnTimeout(game) {
+  clearTurnTimeout(game);
+
+  gameTimeouts[game.gameId] = setTimeout(gameTimeout, TURN_TIMEOUT, game);
+}
+
+function clearTurnTimeout(game) {
   let timeout = gameTimeouts[game.gameId];
   if(timeout) {
     clearTimeout(timeout);
     delete gameTimeouts[game.gameId];
   }
-
-  gameTimeouts[game.gameId] = setTimeout(gameTimeout, TURN_TIMEOUT, game);
 }
 
 //Times out game if needed
 function gameTimeout(game) {
   console.log(`Game: ${game.gameId} timed out.`);
-  delete gameTimeouts[game.gameId];
+
+  clearTurnTimeout(game);
 }
 
 function loginOrFail(userName, password, callback) {
