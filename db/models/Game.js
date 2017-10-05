@@ -14,7 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     gameId: DataTypes.UUID,
     player0: DataTypes.STRING,
     player1: DataTypes.STRING,
+    isGameOver: DataTypes.BOOLEAN,
     isPlayer0First: DataTypes.BOOLEAN,
+    isPlayer0Winner: DataTypes.Boolean,
     boardHeights: DataTypes.ARRAY(DataTypes.INTEGER),
     winCondition: DataTypes.ARRAY(DataTypes.INTEGER),
     moves: DataTypes.ARRAY(DataTypes.INTEGER)
@@ -77,17 +79,27 @@ module.exports = (sequelize, DataTypes) => {
     });
   }
 
+  function newRatingIfWon(a, b) {
+    var expected = elo.getExpected(a, b);
+    return elo.updateRating(expected, 1, a);
+  }
+
+  function newRatingIfLost(a, b) {
+    var expected = elo.getExpected(a, b);
+    return elo.updateRating(expected, 0, a);
+  }
+
   //Only call when game first ends
-  Game.updateRatings = function(game, winner) {
+  Game.updateRatings = function(game, isPlayer0Winner) {
     User.ratingByUserNames(game.player0, game.player1)
     .then(ratings => {
       let [player0Rating, player1Rating] = ratings;
       let newPlayer0Rating, newPlayer1Rating;
 
       //TODO: Handle actually calcing elo for draws
-      if(winner === null) {
+      if(isPlayer0Winner === null) {
         return;
-      } else if(winner === 0) {
+      } else if(isPlayer0Winner) {
         newPlayer0Rating = newRatingIfWon(player0Rating, player1Rating);
         newPlayer1Rating = newRatingIfLost(player1Rating, player0Rating);
       } else {
@@ -147,29 +159,24 @@ module.exports = (sequelize, DataTypes) => {
     return this.player0 !== null && this.player1 !== null;
   }
 
+  //TODO: Now that we are storing isGameOver in the actual database, we need to migrate all calls over
   Game.prototype.isGameOver = function () {
-    let bs = new BoardState(this);
-
-    return bs.isGameOver();
+    throw new Error("isGameOver needs to be migrated to the other implemenation");
   }
 
-  function newRatingIfWon(a, b) {
-    var expected = elo.getExpected(a, b);
-    return elo.updateRating(expected, 1, a);
-  }
-
-  function newRatingIfLost(a, b) {
-    var expected = elo.getExpected(a, b);
-    return elo.updateRating(expected, 0, a);
+  Game.prototype.getBoardState = function() {
+    return new BoardState(this);
   }
 
   Game.prototype.makeMove = function(move) {
     this.moves.push(move);
 
     return this.update({moves: this.moves}).then(game => {
-      let gameOver = game.isGameOver();
-      if(gameOver) {
-        Game.updateRatings(game, gameOver.winner);
+      let bs = this.getBoardState();
+
+      //TODO: Mark gameOver here too
+      if(bs.isGameOver) {
+        Game.updateRatings(game, bs.isPlayer0Winner);
       }
 
       return game;
@@ -200,23 +207,14 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Game.prototype.gameState = function() {
-    let gameOverStats = this.isGameOver();
-    let gameOver = false;
-    let isPlayer0Winner = null;
-
-    if(!gameOverStats === false) {
-      gameOver = true;
-      isPlayer0Winner = gameOverStats.winner === 0;
-    }
-
     return {
       gameId: this.gameId,
       isPlayer0First: this.isPlayer0First,
       player0: this.player0,
       player1: this.player1,
       isStarted: this.isStarted(),
-      isGameOver: gameOver,
-      isPlayer0Winner: isPlayer0Winner,
+      isGameOver: this.isGameOver,
+      isPlayer0Winner: this.isPlayer0Winner,
       boardHeights: this.boardHeights,
       winCondition: this.winCondition,
       moves: this.moves

@@ -11,11 +11,11 @@ const DIRECTIONS = [
 
 export default class BoardState {
   constructor(game) {
-    this.state = this.buildBoardState(game.moves, game.boardHeights, game.isPlayer0First);
-    this.game = game;
+    setBoardState(game.boardHeights, game.isPlayer0First, game.moves);
+    setGameOver(game.boardHeights, game.moves, game.winCondition);
   }
 
-  buildBoardState(moves, boardHeights, isPlayer0First) {
+  setBoardState(boardHeights, isPlayer0First, moves) {
     let state = [];
     let player = isPlayer0First ? 0 : 1;
 
@@ -28,7 +28,7 @@ export default class BoardState {
       player = (player + 1) % 2;
     });
 
-    return state;
+    this.state = state;
   }
 
   isPlayerToken(col, row, playerNumber) {
@@ -44,12 +44,12 @@ export default class BoardState {
     );
   }
 
-  isGameOver() {
+  setGameOver(boardHeights, moves, winCondition) {
     //TODO: This only handles single win conditions
-    let winCount = this.game.winCondition[0]
+    let winCount = winCondition[0]
 
-    for(let col = 0; col < this.game.boardHeights.length; col++) {
-      for(let row = 0; row < this.game.boardHeights[col]; row++) {
+    for(let col = 0; col < boardHeights.length; col++) {
+      for(let row = 0; row < boardHeights[col]; row++) {
         let player = this.state[col][row];
         if(player === undefined) continue;
 
@@ -67,30 +67,27 @@ export default class BoardState {
           }
 
           if(win) {
-            return {
-              message: `Player ${player} wins. Starting at: [${col},${row}] going in direction: ${dir}`,
-              winner: player,
-              col: col,
-              row: row,
-              dir: dir
-            }
+            this.isGameOver = true;
+            this.isPlayer0Winner = player === 0;
+            return;
           }
         }
       }
     }
 
     //Draw
-    if(this.isBoardFull()) {
-      return {
-        message: "Draw",
-        winner: null
-      }
+    if(this.isBoardFull(boardHeights, moves)) {
+      this.isGameOver = true;
+      this.isPlayer0Winner = null;
+      return;
     }
 
-    return false;
+    //Game not over
+    this.isGameOver = false;
+    this.isPlayer0Winner = null;
   }
 
-  isBoardFull() {
-    return this.game.moves.length === this.game.boardHeights.reduce((sum, height) => sum + height, 0);
+  isBoardFull(boardHeights, moves) {
+    return moves.length === boardHeights.reduce((sum, height) => sum + height, 0);
   }
 }
