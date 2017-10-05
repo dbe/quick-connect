@@ -65,7 +65,7 @@ function makeMove(args, callback) {
       }
 
       game.makeMove(move).then((game) => {
-        if(game.isGameOver()) {
+        if(game.isGameOver) {
           clearTurnTimeout(game);
         } else {
           setTurnTimeout(game);
@@ -79,8 +79,7 @@ function makeMove(args, callback) {
 
 //----------Util----------
 
-// const TURN_TIMEOUT = 10 * 60 * 1000; //10 minutes
-const TURN_TIMEOUT = 12000 //12 seconds
+const TURN_TIMEOUT = 10 * 60 * 1000; //10 minutes
 let gameTimeouts = {};
 
 function setTurnTimeout(game) {
@@ -101,7 +100,10 @@ function clearTurnTimeout(game) {
 function gameTimeout(game) {
   console.log(`Game: ${game.gameId} timed out.`);
 
-  clearTurnTimeout(game);
+  game.timeout().then(() => {
+    console.log("Successfully saved timeout to db. Clearing turn timeout entry")
+    clearTurnTimeout(game);
+  });
 }
 
 function loginOrFail(userName, password, callback) {

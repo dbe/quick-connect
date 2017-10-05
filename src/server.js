@@ -13,7 +13,6 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.get('/', function (req, res) {
   Game.findAll({limit: 200, order: [['updatedAt', 'DESC']]}).then(games => {
-    console.log(games);
     var response = {
       games,
       gameStates: games.map(game => JSON.stringify(game.gameState()))

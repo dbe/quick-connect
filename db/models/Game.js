@@ -109,18 +109,28 @@ module.exports = (sequelize, DataTypes) => {
 
       Rating.create({
         gameId: this.gameId,
-        userName: game.player0,
-        opponent: game.player1,
+        userName: this.player0,
+        opponent: this.player1,
         rating: newPlayer0Rating
       });
 
       Rating.create({
         gameId: this.gameId,
-        userName: game.player1,
-        opponent: game.player0,
+        userName: this.player1,
+        opponent: this.player0,
         rating: newPlayer1Rating
       });
     });
+  }
+
+  //Make active player lose the game
+  Game.prototype.timeout = function() {
+    let update = {
+      isGameOver: true,
+      isPlayer0Winner: !this.isPlayer0Turn()
+    }
+
+    return this.update(update);
   }
 
   Game.prototype.addUserToGame = function(user) {
@@ -158,11 +168,6 @@ module.exports = (sequelize, DataTypes) => {
   Game.prototype.isStarted = function() {
     return this.player0 !== null && this.player1 !== null;
   }
-
-  //TODO: Now that we are storing isGameOver in the actual database, we need to migrate all calls over
-  // Game.prototype.isGameOver = function () {
-  //   throw new Error("isGameOver needs to be migrated to the other implemenation");
-  // }
 
   Game.prototype.getBoardState = function() {
     return new BoardState(this);
