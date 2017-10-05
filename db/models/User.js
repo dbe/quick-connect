@@ -47,6 +47,13 @@ module.exports = (sequelize, DataTypes) => {
     });
   }
 
+  //Convienience method for getting multiple ratings
+  User.ratingByUserNames = function(...userNames) {
+    return Promise.all(userNames.map(name => {
+      return User.ratingByUserName(name);
+    }));
+  }
+
   User.prototype.validPassword = function(password) {
     return this.passwordHash === User.hashPassword(password);
   }

@@ -77,6 +77,40 @@ module.exports = (sequelize, DataTypes) => {
     });
   }
 
+  //Only call when game first ends
+  Game.updateRatings = function(game, winner) {
+    User.ratingByUserNames(game.player0, game.player1)
+    .then(ratings => {
+      let [player0Rating, player1Rating] = ratings;
+      let newPlayer0Rating, newPlayer1Rating;
+
+      //TODO: Handle actually calcing elo for draws
+      if(winner === null) {
+        return;
+      } else if(winner === 0) {
+        newPlayer0Rating = newRatingIfWon(player0Rating, player1Rating);
+        newPlayer1Rating = newRatingIfLost(player1Rating, player0Rating);
+      } else {
+        newPlayer0Rating = newRatingIfLost(player0Rating, player1Rating);
+        newPlayer1Rating = newRatingIfWon(player1Rating, player0Rating);
+      }
+
+      Rating.create({
+        gameId: game.gameId,
+        userName: game.player0,
+        opponent: game.player1,
+        rating: newPlayer0Rating
+      });
+
+      Rating.create({
+        gameId: game.gameId,
+        userName: game.player1,
+        opponent: game.player0,
+        rating: newPlayer1Rating
+      });
+    });
+  }
+
   Game.prototype.addUserToGame = function(user) {
     return this.update({player1: user.userName});
   }
@@ -135,38 +169,10 @@ module.exports = (sequelize, DataTypes) => {
     return this.update({moves: this.moves}).then(game => {
       let gameOver = game.isGameOver();
       if(gameOver) {
-        User.ratingByUserName(game.player0).then(player0Rating => {
-          User.ratingByUserName(game.player1).then(player1Rating => {
-            let newPlayer0Rating;
-            let newPlayer1Rating;
-
-            //TODO: Handle actually calcing elo for draws
-            if(gameOver.winner === null) {
-              return;
-            } else if(gameOver.winner === 0) {
-              newPlayer0Rating = newRatingIfWon(player0Rating, player1Rating);
-              newPlayer1Rating = newRatingIfLost(player1Rating, player0Rating);
-            } else {
-              newPlayer0Rating = newRatingIfLost(player0Rating, player1Rating);
-              newPlayer1Rating = newRatingIfWon(player1Rating, player0Rating);
-            }
-
-            return Rating.create({
-              gameId: game.gameId,
-              userName: game.player0,
-              opponent: game.player1,
-              rating: newPlayer0Rating
-            }).then(() => {
-              return Rating.create({
-                gameId: game.gameId,
-                userName: game.player1,
-                opponent: game.player0,
-                rating: newPlayer1Rating
-              });
-            })
-          });
-        })
+        Game.updateRatings(game, gameOver.winner);
       }
+
+      return game;
     });
   }
 

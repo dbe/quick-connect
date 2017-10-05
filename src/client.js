@@ -5,6 +5,7 @@ var client = jayson.client.http(url);
 
 //Run-thru all of the commands
 logGenericResult('echo', {message: 'oreo'}, client);
+logGenericResult('echo', {message: 'oreo'}, client);
 // logGenericResult('getOpenGames', null, client);
 // logGenericResult('joinGame', {userName: 'test', password: 'test', gameId: 'ab45e27a-df6b-457c-88fd-51b14751c954'}, client);
 // logGenericResult('createGame', null, client);

@@ -20,6 +20,10 @@ function echo(args, callback) {
 function joinGame(args, callback) {
   loginOrFail(args.userName, args.password, callback).then(user => {
     Game.joinEmptyOrCreate(user).then(game => {
+      if(game.isStarted()) {
+        setTurnTimeout(game);
+      }
+
       callback(null, {gameId: game.gameId});
     });
   });
@@ -61,7 +65,8 @@ function makeMove(args, callback) {
         return callback({code: 500, message: "Illegal Move"});
       }
 
-      game.makeMove(move).then(() => {
+      game.makeMove(move).then((game) => {
+        console.log(`In callback of makeMove. game: ${game}`);
         return callback(null, {code: 200});
       });
     });
@@ -69,6 +74,26 @@ function makeMove(args, callback) {
 }
 
 //----------Util----------
+
+// const TURN_TIMEOUT = 10 * 60 * 1000; //10 minutes
+const TURN_TIMEOUT = 2000 //2 seconds
+let gameTimeouts = {};
+
+function setTurnTimeout(game) {
+  let timeout = gameTimeouts[game.gameId];
+  if(timeout) {
+    clearTimeout(timeout);
+    delete gameTimeouts[game.gameId];
+  }
+
+  gameTimeouts[game.gameId] = setTimeout(gameTimeout, TURN_TIMEOUT, game);
+}
+
+//Times out game if needed
+function gameTimeout(game) {
+  console.log(`Game: ${game.gameId} timed out.`);
+  delete gameTimeouts[game.gameId];
+}
 
 function loginOrFail(userName, password, callback) {
   return new Promise(function(resolve, reject) {
