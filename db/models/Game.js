@@ -90,8 +90,8 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   //Only call when game first ends
-  Game.updateRatings = function(game, isPlayer0Winner) {
-    User.ratingByUserNames(game.player0, game.player1)
+  Game.prototype.updateRatings = function(isPlayer0Winner) {
+    User.ratingByUserNames(this.player0, this.player1)
     .then(ratings => {
       let [player0Rating, player1Rating] = ratings;
       let newPlayer0Rating, newPlayer1Rating;
@@ -108,14 +108,14 @@ module.exports = (sequelize, DataTypes) => {
       }
 
       Rating.create({
-        gameId: game.gameId,
+        gameId: this.gameId,
         userName: game.player0,
         opponent: game.player1,
         rating: newPlayer0Rating
       });
 
       Rating.create({
-        gameId: game.gameId,
+        gameId: this.gameId,
         userName: game.player1,
         opponent: game.player0,
         rating: newPlayer1Rating
@@ -170,17 +170,19 @@ module.exports = (sequelize, DataTypes) => {
 
   Game.prototype.makeMove = function(move) {
     this.moves.push(move);
+    let update = { moves: this.moves };
 
-    return this.update({moves: this.moves}).then(game => {
-      let bs = this.getBoardState();
+    let bs = this.getBoardState();
+    if(bs.isGameOver) {
+      Object.assign(update, {
+        isGameOver: bs.isGameOver,
+        isPlayer0Winner: bs.isPlayer0Winner
+      });
 
-      //TODO: Mark gameOver here too
-      if(bs.isGameOver) {
-        Game.updateRatings(game, bs.isPlayer0Winner);
-      }
+      this.updateRatings(bs.isPlayer0Winner);
+    }
 
-      return game;
-    });
+    return this.update(update);
   }
 
   Game.prototype.isMoveLegal = function(move) {

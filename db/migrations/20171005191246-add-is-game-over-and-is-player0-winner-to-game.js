@@ -20,7 +20,23 @@ module.exports = {
           allowNull: true
         }
       )
-    ]);
+    ]).then(() => {
+      return Game.findAll().then(games => {
+        let gameUpdates = [];
+
+        games.forEach(game => {
+          let bs = game.getBoardState();
+
+          console.log(`Updating game over stats for gameId: ${game.gameId}`)
+          gameUpdate.push(game.update({
+            isGameOver: bs.isGameOver,
+            isPlayer0Winner: isPlayer0Winner
+          }));
+        });
+
+        return Promise.all(gameUpdates);
+      })
+    });
   },
 
   down: (queryInterface, Sequelize) => {
