@@ -30,9 +30,9 @@ module.exports = {
           let bs = game.getBoardState();
 
           console.log(`Updating game over stats for gameId: ${game.gameId}`)
-          gameUpdate.push(game.update({
+          gameUpdates.push(game.update({
             isGameOver: bs.isGameOver,
-            isPlayer0Winner: isPlayer0Winner
+            isPlayer0Winner: bs.isPlayer0Winner
           }));
         });
 
