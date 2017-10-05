@@ -1,5 +1,7 @@
 'use strict';
 
+var Game = require('../models').Game;
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return Promise.all([

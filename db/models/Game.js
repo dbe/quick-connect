@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     player1: DataTypes.STRING,
     isGameOver: DataTypes.BOOLEAN,
     isPlayer0First: DataTypes.BOOLEAN,
-    isPlayer0Winner: DataTypes.Boolean,
+    isPlayer0Winner: DataTypes.BOOLEAN,
     boardHeights: DataTypes.ARRAY(DataTypes.INTEGER),
     winCondition: DataTypes.ARRAY(DataTypes.INTEGER),
     moves: DataTypes.ARRAY(DataTypes.INTEGER)
@@ -160,9 +160,9 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   //TODO: Now that we are storing isGameOver in the actual database, we need to migrate all calls over
-  Game.prototype.isGameOver = function () {
-    throw new Error("isGameOver needs to be migrated to the other implemenation");
-  }
+  // Game.prototype.isGameOver = function () {
+  //   throw new Error("isGameOver needs to be migrated to the other implemenation");
+  // }
 
   Game.prototype.getBoardState = function() {
     return new BoardState(this);
