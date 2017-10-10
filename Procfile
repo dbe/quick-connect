@@ -1,2 +1,2 @@
 web: yarn start
-pibot: quick-connect $PIBOT_USERNAME $PIBOT_PASSWORD -g infinity -t 30000
+pibot: quick-connect $PIBOT_USERNAME $PIBOT_PASSWORD -g infinity -t 30000 -b ./node_modules/quick-connect-js-bot/lib/bots/mickeyBot.js
