@@ -12,7 +12,7 @@
     "express": "^4.15.4",
     "jayson": "^2.0.4",
     "node-forge": "^0.7.1",
-    "pg": "^7.3.0",
+    "pg": "^8.2.1",
     "pg-hstore": "^2.3.2",
     "pug": "^2.0.0-rc.4",
     "quick-connect-js-bot": "^1.0.7",
